@@ -5,10 +5,23 @@
  
  <mapper namespace="com.jung.mapper.GroupMapper">
  	<insert id="makeGroup">
- 		insert into group (num, name, late_start, late_interval, late_fee, late_max, late_maxFee, fee, board)
- 		values (#{num}, #{name}, #{late_start}, #{late_interval}, #{late_fee}, #{late_max}, #{late_maxFee}, #{fee}, "notice, free")
+ 		insert into team (num, name, late_start, late_interval, late_fee, late_max, late_maxFee, fee, board, admin, date)
+ 		values (#{num}, #{name}, #{late_start}, #{late_interval}, #{late_fee}, #{late_max}, #{late_maxFee}, #{fee}, "notice, free", #{admin}, now())
  	</insert>
+ 	
  	<select id="getMaxNum" resultType="Integer">
- 		select max(num) from group
+ 		select max(num) from team
  	</select>
+
+	<select id="getGroupList" resultType="com.jung.domain.GroupBean">
+ 		select * from team
+ 		order by num
+ 	</select>
+ 	
+	<select id="getGroupDetail" resultType="com.jung.domain.GroupBean">
+ 		select * from team
+ 		where num = #{num}
+ 	</select> 
+ 		
+ 	
  </mapper>

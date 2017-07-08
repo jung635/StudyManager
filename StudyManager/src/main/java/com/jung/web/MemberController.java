@@ -22,8 +22,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.jung.domain.GroupBean;
 import com.jung.domain.MemberBean;
 import com.jung.service.CustomUserDetails;
+import com.jung.service.GroupService;
 import com.jung.service.MemberService;
 import com.jung.service.RegisterRequestValidator;
 
@@ -38,6 +40,9 @@ public class MemberController {
 	
 	@Inject
 	private RegisterRequestValidator validator;
+	
+	@Inject
+	private GroupService gservice;
 	
 	@RequestMapping(value="/insert", method=RequestMethod.GET)
 	public String insertGet() throws Exception{
@@ -85,6 +90,7 @@ public class MemberController {
 	@RequestMapping(value="/main", method=RequestMethod.GET)
 	public String mainGet(HttpSession session, Model model) throws Exception{
 		model.addAttribute("id", session.getAttribute("id"));
+		model.addAttribute("group_list", gservice.getGroupList((String)session.getAttribute("id")));
 		return "/member/main";
 	}
 	

@@ -1,5 +1,7 @@
 package com.jung.persistence;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
@@ -7,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.jung.domain.BoardBean;
 import com.jung.domain.GroupBean;
+import com.jung.domain.MemberBean;
 @Repository
 public class GroupDAOImple implements GroupDAO {
 	@Inject
@@ -27,7 +30,14 @@ public class GroupDAOImple implements GroupDAO {
 		
 		return max;
 	}
-	
-	
 
+	@Override
+	public List<GroupBean> getGroupList(String id) throws Exception {
+		return sqlSession.selectList(namespace+".getGroupList", id);
+	}
+
+	@Override
+	public GroupBean getGroupDetail(int group_num) throws Exception {
+		return sqlSession.selectOne(namespace+".getGroupDetail", group_num);
+	}
 }

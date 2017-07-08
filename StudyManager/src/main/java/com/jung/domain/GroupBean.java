@@ -1,10 +1,13 @@
 package com.jung.domain;
 
+import java.util.Date;
+
 import org.springframework.stereotype.Service;
 
 public class GroupBean {
-	private String name, board, late_max, late_start;
+	private String name, board, late_max, late_start, admin, member;
 	private int num, late_interval, late_fee, late_maxFee, fee;
+	private Date date;
 	
 	public String getName() {
 		return name;
@@ -59,6 +62,24 @@ public class GroupBean {
 	}
 	public void setLate_start(String late_start) {
 		this.late_start = late_start;
+	}
+	public String getAdmin() {
+		return admin;
+	}
+	public void setAdmin(String admin) {
+		this.admin = admin;
+	}
+	public Date getDate() {
+		return date;
+	}
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	public String getMember() {
+		return member;
+	}
+	public void setMember(String member) {
+		this.member = member;
 	}
 
 }
