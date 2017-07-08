@@ -20,6 +20,7 @@ ${id }님이 로그인 하셨습니다!<br>
 <a href="<c:url value="/member/update"/>">회원정보수정</a><br>
 <a href="<c:url value="/member/delete"/>">회원정보삭제</a><br>
 <a href="<c:url value="/board/list"/>">게시판 가기</a><br>
+<a href="<c:url value="/group/make"/>">그룹 만들기</a><br>
 <sec:authorize access="hasRole('ROLE_ADMIN')">
 	<a href="<c:url value="/member/list"/>">회원리스트</a><br>
 </sec:authorize>

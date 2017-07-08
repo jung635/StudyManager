@@ -13,7 +13,7 @@ import com.jung.persistence.BoardDAO;
 public class BoardServiceImple implements BoardService{
 	
 	@Inject
-	BoardDAO bdao;
+	private BoardDAO bdao;
 
 	@Override
 	public void insertBoard(BoardBean bb) throws Exception {
