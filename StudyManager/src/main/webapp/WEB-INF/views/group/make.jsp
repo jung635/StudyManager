@@ -14,6 +14,13 @@ function submitCheck(){
 		return false;
 	}
 }
+
+function makeBoard(){
+	board_count = document.fr.name.board_count;
+	for(i=0; i<board_count; i++){
+		document.getElementById("addBoard").innerHTML = "<input type='text' name='board_name'"+i+">"
+	}
+}
 </script>
 <body>
 <h2>그룹 만들기</h2>
@@ -25,10 +32,15 @@ function submitCheck(){
  	지각비 : <input type="number" name="late_fee"><br>
 	최대 지각 시간 : <input type="time" name="late_max"><br>
 	최대 지각비 : <input type="number" name="late_maxFee"><br>
+	결석비 : <input type="number" name="absent_fee"><br>
 	기타 벌금 : <input type="number" name="fee"><br>
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 	<input type="submit" value="작성 완료">
 	<input type="button" value="취소" onclick="history.back()">
+	<h4>생성할 게시판</h4>
+	<!-- 중복 안되게 처리하기 -->
+	생성할 게시판 개수: <input type="number" name="board_count"><input type="button" onclick="makeBoard()">
+	<div id="addBoard"></div>
 </form>
 *게시판은 공지사항과 자유게시판이 기본적으로 생성되며 추후에 새로 생성 가능합니다.<br>
 </body>

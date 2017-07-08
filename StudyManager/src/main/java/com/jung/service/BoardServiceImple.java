@@ -31,8 +31,8 @@ public class BoardServiceImple implements BoardService{
 	}
 
 	@Override
-	public int getListCount() throws Exception {
-		return bdao.getListCount();
+	public int getListCount(Map<String, Object> count_map) throws Exception {
+		return bdao.getListCount(count_map);
 	}
 
 	@Override

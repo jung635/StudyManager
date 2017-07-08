@@ -24,6 +24,7 @@ import com.jung.domain.BoardBean;
 import com.jung.domain.MemberBean;
 import com.jung.domain.PageMaker;
 import com.jung.service.BoardService;
+import com.jung.service.GroupService;
 import com.jung.service.MemberService;
 
 @Controller
@@ -34,9 +35,12 @@ public class BoardController {
 	private BoardService service;
 	@Inject
 	private MemberService mservice;
+	@Inject
+	private GroupService gservice;
 	
 	@RequestMapping(value="/write", method=RequestMethod.GET)
-	public String insertGet() throws Exception{
+	public String insertGet(@RequestParam("board_name") String board_name, Model model) throws Exception{
+		model.addAttribute("board_name", board_name);
 		return "/board/writeForm";
 	}
 	
@@ -62,17 +66,23 @@ public class BoardController {
 		//file_ori.renameTo(file_new);
 		file.transferTo(file_new);
 		bb.setFile(re_file_name);
-		
+		int group_num = (Integer)session.getAttribute("group_num");
+		bb.setGroup_num(group_num);
 		service.insertBoard(bb);
-		return "redirect:/board/list?pageNum=1";
+		return "redirect:/board/list?pageNum=1&board_name="+bb.getBoard_name();
 	}
 	
 	@RequestMapping(value="/list", method=RequestMethod.GET)
-	public String listGet(Model model, HttpServletRequest req) throws Exception{
+	public String listGet(Model model, HttpServletRequest req, @RequestParam("board_name") String board_name, 
+			HttpSession session) throws Exception{
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setPageBlock(10);
 		pageMaker.setPageSize(10);
-		pageMaker.setCount(service.getListCount());
+		Map<String, Object> count_map = new HashMap<String, Object>();
+		count_map.put("group_num", (Integer)session.getAttribute("group_num"));
+		count_map.put("board_name", board_name);
+		pageMaker.setCount(service.getListCount(count_map));
+		System.out.println(service.getListCount(count_map));
 		int pageNum;
 		if(req.getParameter("pageNum") == null) pageNum = 1;
 		else pageNum = Integer.parseInt(req.getParameter("pageNum"));
@@ -81,13 +91,17 @@ public class BoardController {
 		int start = (pageMaker.getPageSize()*(pageNum-1));
 		pageMap.put("start", start);
 		pageMap.put("pageSize", pageMaker.getPageSize());
+		count_map.put("group_num", (Integer)session.getAttribute("group_num"));
+		count_map.put("board_name", board_name);
 		model.addAttribute("boardList", service.getBoardList(pageMap));
 		model.addAttribute("pageMaker", pageMaker);
+		model.addAttribute("board_name", board_name);
 		return "/board/list";
 	}
 	
 	@RequestMapping(value="/content", method=RequestMethod.GET)
-	public String contentGet(Model model, @RequestParam("num") int num, @RequestParam("pageNum") int pageNum) throws Exception{
+	public String contentGet(Model model, @RequestParam("num") int num, @RequestParam("pageNum") int pageNum, 
+			@RequestParam("board_name") String board_name) throws Exception{
 		service.updateReadCount(num);
 		model.addAttribute("bb", service.getContent(num));
 		model.addAttribute("pageNum", pageNum);

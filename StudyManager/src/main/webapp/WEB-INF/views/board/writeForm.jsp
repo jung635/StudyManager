@@ -8,12 +8,14 @@
 <title>Insert title here</title>
 </head>
 <body>
+<c:import url="/group/header" />
 <form action="<c:url value="/board/write?${_csrf.parameterName}=${_csrf.token}"/>" method="post" name="fr" enctype="multipart/form-data">
 <table>
 <tr><td>제목 <input type="text" name="subject"></td></tr>
 <tr><td>내용 <textarea name="content" cols="60" rows="15"></textarea></td></tr>
 <tr><td>첨부파일 <input type="file" name="fileInput"></td></tr>
 </table>
+<input type="hidden" name="board_name" value="${board_name }">
 <input type="submit" value="등록">
 <input type="button" value="취소" onclick="history.back()">
 </form>

@@ -34,9 +34,11 @@ public class BoardDAOImple implements BoardDAO{
 	public List<BoardBean> getBoardList(Map<String, Object> pageMap) throws Exception {
 		return sqlSession.selectList(namespace+".getBoardList", pageMap);
 	}
-
+	
 	@Override
-	public int getListCount() throws Exception {
+	public int getListCount(Map<String, Object> count_map) throws Exception {
+		System.out.println(count_map.get("board_name"));
+		System.out.println(count_map.get("group_num"));
 		return sqlSession.selectOne(namespace+".getListCount");
 	}
 

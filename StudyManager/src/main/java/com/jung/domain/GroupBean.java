@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 public class GroupBean {
 	private String name, board, late_max, late_start, admin, member;
-	private int num, late_interval, late_fee, late_maxFee, fee;
+	private int num, late_interval, late_fee, late_maxFee, fee, absent_fee;
 	private Date date;
 	
 	public String getName() {
@@ -80,6 +80,12 @@ public class GroupBean {
 	}
 	public void setMember(String member) {
 		this.member = member;
+	}
+	public int getAbsent_fee() {
+		return absent_fee;
+	}
+	public void setAbsent_fee(int absent_fee) {
+		this.absent_fee = absent_fee;
 	}
 
 }

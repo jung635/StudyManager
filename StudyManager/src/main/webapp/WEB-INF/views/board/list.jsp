@@ -9,12 +9,13 @@
 <title>Insert title here</title>
 </head>
 <body>
+<c:import url="/group/header" />
 <table border="1">
 <th>글번호</th><th>이름</th><th>제목</th><th>조회수</th><th>작성일</th>
 <c:forEach var="bb" items="${boardList}">
 <tr><td>${bb.num }</td><td>${bb.name }<td>
 <c:set var="wid" value="0"/>
-<a href="<c:url value="/board/content?num=${bb.num }&pageNum=${pageMaker.pageNum}"/>">${bb.subject }</a></td>
+<a href="<c:url value="/board/content?num=${bb.num }&pageNum=${pageMaker.pageNum}&board_name=${board_name }"/>">${bb.subject }</a></td>
 <td>${bb.readcount }</td><td>${bb.date }</td>
 </tr>
 </c:forEach>
@@ -28,6 +29,6 @@
 <c:if test="${pageMaker.endPage }<${pageMaker.pageCount }">
 <a href="<c:url value="/board/list?pageNum=${pageMaker.startPage }+${pageMaker.pageBlock}"/>">[다음]</a>&nbsp;
 </c:if>
-<input type="button" value="글쓰기" onclick="location.href='<c:url value="/board/write"/>'">
+<input type="button" value="글쓰기" onclick="location.href='<c:url value="/board/write?board_name=${board_name }"/>'">
 </body>
 </html>

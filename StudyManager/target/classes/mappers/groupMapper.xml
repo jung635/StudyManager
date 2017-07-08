@@ -21,7 +21,35 @@
 	<select id="getGroupDetail" resultType="com.jung.domain.GroupBean">
  		select * from team
  		where num = #{num}
- 	</select> 
- 		
+ 	</select>
  	
+ 	<insert id="insertAttendence">
+ 		insert into attendence (num, group_num, attend_time, date, late_interval, late_fee, fee, id, absent_fee, status)
+ 		values (#{num}, #{group_num}, now(), now(), #{late_interval}, #{late_fee}, #{fee}, #{id}, #{absent_fee}, #{status})
+ 	</insert> 
+ 	
+ 	<select id="getMaxNumForAttendence" resultType="Integer">
+ 		select max(num) from attendence
+ 	</select>
+ 	
+ 	<select id="getAttendenceList" resultType="com.jung.domain.AttendenceBean">
+ 		select * from attendence
+ 		order by date desc
+ 	</select>
+ 	
+ 	<select id="getAttendenceDetail" resultType="com.jung.domain.AttendenceBean">
+ 		select * from attendence
+ 		where id = #{id}
+ 	</select>
+ 	
+ 	<select id="getAttendenceListByDate" resultType="com.jung.domain.AttendenceBean">
+ 		select * from attendence
+ 		where date = #{date}
+ 		order by attend_time desc
+ 	</select>
+ 		
+ 	 	<select id="getAttendenceByDateAndId" parameterType="map" resultType="com.jung.domain.AttendenceBean">
+ 		select * from attendence
+ 		where id = #{id} and date = #{date}
+ 	</select>
  </mapper>

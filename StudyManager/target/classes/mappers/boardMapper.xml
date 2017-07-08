@@ -5,8 +5,8 @@
  
  <mapper namespace="com.jung.mapper.BoardMapper">
  	<insert id="insertBoard">
- 		insert into board (num, name, subject, content, readcount, ip, date, re_lev, re_seq, file, fileName)
- 		values (#{num}, #{name}, #{subject}, #{content}, 0, #{ip}, now(), 0, 0, #{file}, #{fileName})
+ 		insert into board (num, name, subject, content, readcount, ip, date, re_lev, re_seq, file, fileName, group_num, board_name)
+ 		values (#{num}, #{name}, #{subject}, #{content}, 0, #{ip}, now(), 0, 0, #{file}, #{fileName}, #{group_num}, #{board_name})
  	</insert>
  	
  	<select id="getMaxNum" resultType="Integer">
@@ -15,12 +15,14 @@
  	
  	<select id="getBoardList" parameterType="map" resultType="com.jung.domain.BoardBean">
  		select * from board
+ 		where group_num=#{group_num} and board_name=#{board_name}
  		order by date desc
  		limit #{start},#{pageSize}
  	</select>
  	
- 	<select id="getListCount" resultType="Integer">
+ 	<select id="getListCount" parameterType="map" resultType="Integer">
  		select count(*) from board
+ 		where group_num=#{group_num} and board_name=#{board_name}
  	</select>
  	
  	<select id="getContent" resultType="com.jung.domain.BoardBean">
