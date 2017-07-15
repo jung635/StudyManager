@@ -12,10 +12,10 @@
 <tr><td>이름</td><td>${bb.name }</td></tr>
 <tr><td>제목</td><td>${bb.subject }</td></tr>
 <tr><td>내용</td><td>${bb.content }</td></tr>
-<tr><td>첨부파일</td><td><a href="<c:url value='/board/fileDownload?fileName=${bb.file }'/>">${bb.fileName }</a></td></tr>
+<tr><td>첨부파일</td><td><a href="<c:url value='/board/fileDownload?file=${bb.file }&fileName=${bb.fileName }'/>">${bb.fileName }</a></td></tr>
 </table>
 <input type="button" value="수정하기" onclick="location.href='<c:url value="/board/update?num=${bb.num }&pageNum=${pageNum }"/>'">
 <input type="button" value="삭제하기" onclick="location.href='<c:url value="/board/delete?num=${bb.num }"/>'">
-<input type="button" value="목록돌아가기" onclick="location.href='<c:url value="/board/list?pageNum=${pageNum }"/>'">
+<input type="button" value="목록돌아가기" onclick="location.href='<c:url value="/board/list?pageNum=${pageNum }&board_name=${bb.board_name }"/>'">
 </body>
 </html>

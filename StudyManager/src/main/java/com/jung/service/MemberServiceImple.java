@@ -2,6 +2,7 @@ package com.jung.service;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -64,6 +65,11 @@ public class MemberServiceImple implements MemberService{
 		}else{
 			return false;
 		}
+	}
+
+	@Override
+	public void regGroup(Map<String, Object> map) throws Exception {
+		mdao.regGroup(map);
 	}
 	
 	

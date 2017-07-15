@@ -38,8 +38,8 @@ public class GroupServiceImple implements GroupService{
 	}
 
 	@Override
-	public List<GroupBean> getGroupList(String id) throws Exception {
-		return gdao.getGroupList(id);
+	public List<GroupBean> getGroupList() throws Exception {
+		return gdao.getGroupList();
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class GroupServiceImple implements GroupService{
 			for(int i=0; i<member_arr.length; i++){
 					String[] member_arr_detail = member_arr[i].split("/");
 					MemberBean mb = mdao.getInfo(member_arr_detail[0]);
-					AttendenceBean ab = getAttendenceByDateAndId(mb.getId(), date);
+					AttendenceBean ab = getAttendenceListByDateGroup(mb.getId(), date, group_num);
 					mbab_map.put(mb, ab);
 					member_map.put(mb, ab);
 			}
@@ -112,4 +112,16 @@ public class GroupServiceImple implements GroupService{
 		map.put("date", format.format(date));
 		return gdao.getAttendenceByDateAndId(map);
 	}
+
+	@Override
+	public AttendenceBean getAttendenceListByDateGroup(String id, Date date, int group_num) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		map.put("id", id);
+		map.put("date", format.format(date));
+		map.put("group_num", group_num);
+		return gdao.getAttendenceListByDateGroup(map);
+	}
+	
+	
 }

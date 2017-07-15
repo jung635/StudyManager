@@ -1,15 +1,14 @@
 package com.jung.domain;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Date;
 
 public class AttendenceBean {
 	private int num, group_num, late_interval, late_fee, fee, absent_fee;
-
 	private String id, status;
-	private Timestamp attend_time;
+	private Time attend_time;
 	private Date date;
-	
 	public int getNum() {
 		return num;
 	}
@@ -46,10 +45,10 @@ public class AttendenceBean {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public Timestamp getAttend_time() {
+	public Time getAttend_time() {
 		return attend_time;
 	}
-	public void setAttend_time(Timestamp attend_time) {
+	public void setAttend_time(Time attend_time) {
 		this.attend_time = attend_time;
 	}
 	public Date getDate() {

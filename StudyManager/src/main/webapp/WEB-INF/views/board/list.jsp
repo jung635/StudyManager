@@ -15,7 +15,7 @@
 <c:forEach var="bb" items="${boardList}">
 <tr><td>${bb.num }</td><td>${bb.name }<td>
 <c:set var="wid" value="0"/>
-<a href="<c:url value="/board/content?num=${bb.num }&pageNum=${pageMaker.pageNum}&board_name=${board_name }"/>">${bb.subject }</a></td>
+<a href="<c:url value="/board/content?num=${bb.num }&pageNum=${pageMaker.pageNum}"/>">${bb.subject }</a></td>
 <td>${bb.readcount }</td><td>${bb.date }</td>
 </tr>
 </c:forEach>

@@ -45,6 +45,6 @@
 	</authentication-manager>	
     
     <beans:bean id="customAuthenticationProvider" class="com.jung.service.CustomAuthenticationProvider"/>  
-	<beans:bean id="customAuthenticationFailureHandler" class="com.jung.service.customAuthenticationFailureHandler"/>
+	<beans:bean id="customAuthenticationFailureHandler" class="com.jung.service.CustomAuthenticationFailureHandler"/>
     
 </beans:beans>

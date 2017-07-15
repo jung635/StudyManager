@@ -1,6 +1,7 @@
 package com.jung.persistence;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -47,6 +48,11 @@ public class MemberDAOImple implements MemberDAO{
 	public List<MemberBean> getList() throws Exception {
 		return sqlSession.selectList(namespace+".getList");
 		
+	}
+
+	@Override
+	public void regGroup(Map<String, Object> map) throws Exception {
+		sqlSession.update(namespace+".regGroup", map);
 	}
 	
 }

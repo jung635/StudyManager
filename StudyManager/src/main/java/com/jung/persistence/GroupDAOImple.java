@@ -35,8 +35,8 @@ public class GroupDAOImple implements GroupDAO {
 	}
 
 	@Override
-	public List<GroupBean> getGroupList(String id) throws Exception {
-		return sqlSession.selectList(namespace+".getGroupList", id);
+	public List<GroupBean> getGroupList() throws Exception {
+		return sqlSession.selectList(namespace+".getGroupList");
 	}
 
 	@Override
@@ -76,6 +76,11 @@ public class GroupDAOImple implements GroupDAO {
 	@Override
 	public AttendenceBean getAttendenceByDateAndId(Map<String, String> map) throws Exception {
 		return sqlSession.selectOne(namespace+".getAttendenceByDateAndId", map);
+	}
+	
+	@Override
+	public AttendenceBean getAttendenceListByDateGroup(Map<String, Object> map) throws Exception {
+		return sqlSession.selectOne(namespace+".getAttendenceListByDateGroup", map);
 	}
 	
 }

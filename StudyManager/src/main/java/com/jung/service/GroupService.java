@@ -12,7 +12,7 @@ import com.jung.domain.MemberBean;
 public interface GroupService {
 	public void groupMake(GroupBean gb) throws Exception;
 	public int getMaxNum() throws Exception;
-	public List<GroupBean> getGroupList(String id) throws Exception;
+	public List<GroupBean> getGroupList() throws Exception;
 	public GroupBean getGroupDetail(int group_num) throws Exception;
 	public LinkedHashMap<MemberBean, AttendenceBean> getGroupMemberList(int group_num, Date date) throws Exception;
 	public LinkedHashMap<MemberBean, String> getGroupMemberList(int group_num) throws Exception;
@@ -22,4 +22,5 @@ public interface GroupService {
 	public List<AttendenceBean> getAttendenceListByDate(Date date) throws Exception;
 	public AttendenceBean getAttendenceDetail(String id) throws Exception;
 	public AttendenceBean getAttendenceByDateAndId(String id, Date date) throws Exception;
+	public AttendenceBean getAttendenceListByDateGroup(String id, Date date, int group_num) throws Exception;
 }

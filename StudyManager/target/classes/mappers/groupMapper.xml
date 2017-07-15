@@ -5,8 +5,8 @@
  
  <mapper namespace="com.jung.mapper.GroupMapper">
  	<insert id="makeGroup">
- 		insert into team (num, name, late_start, late_interval, late_fee, late_max, late_maxFee, fee, board, admin, date)
- 		values (#{num}, #{name}, #{late_start}, #{late_interval}, #{late_fee}, #{late_max}, #{late_maxFee}, #{fee}, "notice, free", #{admin}, now())
+ 		insert into team (num, name, late_start, late_interval, late_fee, late_max, late_maxFee, absent_fee, fee, board, admin, date, member)
+ 		values (#{num}, #{name}, #{late_start}, #{late_interval}, #{late_fee}, #{late_max}, #{late_maxFee}, #{absent_fee}, #{fee}, "공지사항, 자유게시판", #{admin}, now(), #{member})
  	</insert>
  	
  	<select id="getMaxNum" resultType="Integer">
@@ -20,7 +20,7 @@
  	
 	<select id="getGroupDetail" resultType="com.jung.domain.GroupBean">
  		select * from team
- 		where num = #{num}
+ 		where num = #{group_num}
  	</select>
  	
  	<insert id="insertAttendence">
@@ -47,9 +47,13 @@
  		where date = #{date}
  		order by attend_time desc
  	</select>
- 		
- 	 	<select id="getAttendenceByDateAndId" parameterType="map" resultType="com.jung.domain.AttendenceBean">
+ 	<select id="getAttendenceByDateAndId" parameterType="map" resultType="com.jung.domain.AttendenceBean">
  		select * from attendence
  		where id = #{id} and date = #{date}
+ 	</select>
+ 	
+ 	<select id="getAttendenceListByDateGroup" parameterType="map" resultType="com.jung.domain.AttendenceBean">
+ 		select * from attendence
+ 		where id = #{id} and date = #{date} and group_num = #{group_num}
  	</select>
  </mapper>

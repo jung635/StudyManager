@@ -10,6 +10,7 @@ public class MemberBean {
 	private Timestamp reg_date;
 	private String gender;
 	private int age;
+	private String team;
 	
 	public String getId() {
 		return id;
@@ -52,6 +53,12 @@ public class MemberBean {
 	}
 	public void setAge(int age) {
 		this.age = age;
+	}
+	public String getTeam() {
+		return team;
+	}
+	public void setTeam(String team) {
+		this.team = team;
 	}
 
 }

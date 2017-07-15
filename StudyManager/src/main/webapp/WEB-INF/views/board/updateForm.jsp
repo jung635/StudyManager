@@ -20,6 +20,7 @@
 <input type="hidden" name="fileName" value="${bb.fileName }">
 <input type="hidden" name="num" value="${bb.num }">
 <input type="hidden" name="pageNum" value="${pageNum }">
+<input type="hidden" name="board_name" value="${bb.board_name }">
 <input type="submit" value="등록">
 <input type="button" value="취소" onclick="history.back()">
 </form>

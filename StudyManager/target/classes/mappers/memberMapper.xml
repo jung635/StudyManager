@@ -25,6 +25,11 @@
 		where id=#{id}
 	</update>
 	
+	<update id="regGroup" parameterType="map">
+		update member set team=#{group} 
+		where id=#{id}
+	</update>
+	
 	<delete id="deleteMember">
 		delete from member
 		where id=#{id}

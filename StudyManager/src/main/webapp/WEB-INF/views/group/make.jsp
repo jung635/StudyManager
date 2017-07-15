@@ -13,10 +13,32 @@ function submitCheck(){
 		alert("이름을 입력해주세요");
 		return false;
 	}
+
+	if(document.fr.late_start.value == ""){
+		document.fr.late_start.value = document.fr.late_start_default.value;
+	}
+	if(document.fr.late_interval.value == ""){
+		document.fr.late_interval.value = document.fr.late_interval_default.value;
+	}
+	if(document.fr.late_fee.value == ""){
+		document.fr.late_fee.value = document.fr.late_fee_default.value;
+	}
+	if(document.fr.late_max.value == ""){
+		document.fr.late_max.value = document.fr.late_max_default.value;
+	}
+	if(document.fr.late_maxFee.value == ""){
+		document.fr.late_maxFee.value = document.fr.late_maxFee_default.value;
+	}
+	if(document.fr.absent_fee.value == ""){
+		document.fr.absent_fee.value = document.fr.absent_fee_default.value;
+	}
+	if(document.fr.fee.value == ""){
+		document.fr.fee.value = document.fr.fee_default.value;
+	}
 }
 
 function makeBoard(){
-	board_count = document.fr.name.board_count;
+	board_count = document.fr.name.board_coun;
 	for(i=0; i<board_count; i++){
 		document.getElementById("addBoard").innerHTML = "<input type='text' name='board_name'"+i+">"
 	}
@@ -36,11 +58,26 @@ function makeBoard(){
 	기타 벌금 : <input type="number" name="fee"><br>
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 	<input type="submit" value="작성 완료">
-	<input type="button" value="취소" onclick="history.back()">
+	<input type="button" value="취소" onclick="history.back()"><br>
+	**입력 하지 않을 시 기본 값으로 저장됩니다.<br>
+	지각 시작 시간 : AM 11:00<br>
+	시간 간격 : 10분<br>
+ 	지각비 : 1000원<br>
+	최대 지각 시간 : PM12:00<br>
+	최대 지각비 : 6000원<br>
+	결석비 : 10000원<br>
+	기타 벌금 : 2000원<br>
+	<input type="hidden" name="late_start_default" value="11:00:00">
+	<input type="hidden" name="late_interval_default" value="10">
+ 	<input type="hidden" name="late_fee_default" value="1000">
+	<input type="hidden" name="late_max_default" value="12:00:00">
+	<input type="hidden" name="late_maxFee_default" value="6000">
+	<input type="hidden" name="absent_fee_default" value="10000">
+	<input type="hidden" name="fee_default" value="2000"><br>
 	<h4>생성할 게시판</h4>
 	<!-- 중복 안되게 처리하기 -->
-	생성할 게시판 개수: <input type="number" name="board_count"><input type="button" onclick="makeBoard()">
-	<div id="addBoard"></div>
+<!-- 	생성할 게시판 개수: <input type="number" name="board_count"><input type="button" value="생성하기" onclick="makeBoard()">
+	<div id="addBoard"></div> -->
 </form>
 *게시판은 공지사항과 자유게시판이 기본적으로 생성되며 추후에 새로 생성 가능합니다.<br>
 </body>

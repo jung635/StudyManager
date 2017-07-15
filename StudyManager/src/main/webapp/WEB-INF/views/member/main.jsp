@@ -22,12 +22,11 @@ ${id }님이 로그인 하셨습니다!<br>
 <sec:authorize access="hasRole('ROLE_ADMIN')">
 	<a href="<c:url value="/member/list"/>">회원리스트</a><br>
 </sec:authorize>
-<a href="<c:url value="/board/list"/>">게시판 가기</a><br>
 <a href="<c:url value="/group/make"/>">그룹 만들기</a><br>
 <h2>내 그룹 목록</h2>
 <table border="1">
-	<c:forEach items="${group_list }" var="gb" >
-		<tr><td>그룹 이름</td><td><a href="<c:url value="/group/main?group_num=${gb.num }"/>">${gb.name }</a><c:if test="${gb.admin eq id }"><b> (관리자입니다)</b></c:if></td></tr>
+	<c:forEach items="${group_map }" var="key" >
+			<tr><td>그룹 이름</td><td><a href="<c:url value="/group/main?group_num=${key.value.num }"/>">${key.value.name }</a><c:if test="${key.value.admin eq id }"><b> (관리자입니다)</b></c:if></td></tr>
 	</c:forEach>
 </table>
 </body>

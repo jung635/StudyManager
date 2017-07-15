@@ -2,7 +2,9 @@ package com.jung.web;
 
 
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -89,8 +91,19 @@ public class MemberController {
 	
 	@RequestMapping(value="/main", method=RequestMethod.GET)
 	public String mainGet(HttpSession session, Model model) throws Exception{
-		model.addAttribute("id", session.getAttribute("id"));
-		model.addAttribute("group_list", gservice.getGroupList((String)session.getAttribute("id")));
+		String id = (String)session.getAttribute("id");
+		model.addAttribute("id", id);
+		Map<Integer, GroupBean> map = new HashMap<Integer, GroupBean>();
+		if(service.getInfo(id).getTeam() != null){
+			String[] group_num = service.getInfo(id).getTeam().split(",");
+			for(int i=0; i<group_num.length; i++){
+				System.out.println(group_num[i]);
+				map.put(Integer.parseInt(group_num[i]), gservice.getGroupDetail(Integer.parseInt(group_num[i])));
+			}
+			
+		}
+		
+		model.addAttribute("group_map", map);
 		return "/member/main";
 	}
 	

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.jung.domain.BoardBean;
 import com.jung.domain.MemberBean;
@@ -45,31 +46,35 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value="/write", method=RequestMethod.POST)
-	public String insertPost(BoardBean bb, @RequestParam("fileInput") MultipartFile file ,HttpServletRequest req, HttpSession session) throws Exception{
+	public String insertPost(BoardBean bb, @RequestParam("fileInput") MultipartFile file ,
+			HttpServletRequest req, HttpSession session, RedirectAttributes redirect) throws Exception{
 		String ip = req.getHeader("X-FORWARDED-FOR");
 		if(ip == null) ip = req.getRemoteAddr();
 		bb.setIp(ip);
 		bb.setNum(service.getMaxNum()+1);
 		bb.setName((String)session.getAttribute("id"));
-		String root_path = req.getSession().getServletContext().getRealPath("/");
-		String my_path = "resources"+File.separator+"files";
-		File file_dir = new File(root_path+my_path);
-		if(file_dir.exists() == false) file_dir.mkdirs();
-		
-		String file_name = file.getOriginalFilename();
-		bb.setFileName(file_name);
-		int index = file_name.lastIndexOf(".");
-		System.out.println(root_path+my_path);
-		String re_file_name = (String)session.getAttribute("id") + new Date().getTime() + file_name.substring(index, file_name.length());
-		//File file_ori = new File(root_path + my_path + File.separator + file_name);
-		File file_new = new File(root_path + my_path + File.separator + re_file_name);
-		//file_ori.renameTo(file_new);
-		file.transferTo(file_new);
-		bb.setFile(re_file_name);
+		if(file.getSize() != 0){
+			String root_path = req.getSession().getServletContext().getRealPath("/");
+			String my_path = "resources"+File.separator+"files";
+			File file_dir = new File(root_path+my_path);
+			if(file_dir.exists() == false) file_dir.mkdirs();
+			String file_name = file.getOriginalFilename();
+			bb.setFileName(file_name);
+			int index = file_name.lastIndexOf(".");
+			System.out.println(root_path+my_path);
+			String re_file_name = (String)session.getAttribute("id") + new Date().getTime() + file_name.substring(index, file_name.length());
+			//File file_ori = new File(root_path + my_path + File.separator + file_name);
+			File file_new = new File(root_path + my_path + File.separator + re_file_name);
+			//file_ori.renameTo(file_new);
+			file.transferTo(file_new);
+			bb.setFile(re_file_name);
+		}
 		int group_num = (Integer)session.getAttribute("group_num");
 		bb.setGroup_num(group_num);
 		service.insertBoard(bb);
-		return "redirect:/board/list?pageNum=1&board_name="+bb.getBoard_name();
+		redirect.addAttribute("board_name", bb.getBoard_name());
+		redirect.addAttribute("pageNum", 1);
+		return "redirect:/board/list";
 	}
 	
 	@RequestMapping(value="/list", method=RequestMethod.GET)
@@ -91,8 +96,8 @@ public class BoardController {
 		int start = (pageMaker.getPageSize()*(pageNum-1));
 		pageMap.put("start", start);
 		pageMap.put("pageSize", pageMaker.getPageSize());
-		count_map.put("group_num", (Integer)session.getAttribute("group_num"));
-		count_map.put("board_name", board_name);
+		pageMap.put("group_num", (Integer)session.getAttribute("group_num"));
+		pageMap.put("board_name", board_name);
 		model.addAttribute("boardList", service.getBoardList(pageMap));
 		model.addAttribute("pageMaker", pageMaker);
 		model.addAttribute("board_name", board_name);
@@ -100,8 +105,7 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value="/content", method=RequestMethod.GET)
-	public String contentGet(Model model, @RequestParam("num") int num, @RequestParam("pageNum") int pageNum, 
-			@RequestParam("board_name") String board_name) throws Exception{
+	public String contentGet(Model model, @RequestParam("num") int num, @RequestParam("pageNum") int pageNum) throws Exception{
 		service.updateReadCount(num);
 		model.addAttribute("bb", service.getContent(num));
 		model.addAttribute("pageNum", pageNum);
@@ -109,13 +113,15 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value="/fileDownload", method=RequestMethod.GET)
-	public String fileDownload(@RequestParam("fileName") String fileName, HttpServletRequest req,HttpServletResponse resp) throws Exception{
+	public String fileDownload(@RequestParam("fileName") String fileName, @RequestParam("file") String file, 
+			HttpServletRequest req,HttpServletResponse resp) throws Exception{
 		String root_path = req.getSession().getServletContext().getRealPath("/");
 		String my_path = "resources"+File.separator+"files";
-		byte fileByte[] = FileUtils.readFileToByteArray(new File(root_path + my_path + File.separator + fileName));
+		byte fileByte[] = FileUtils.readFileToByteArray(new File(root_path + my_path + File.separator + file));
 	    resp.setContentType("application/octet-stream");
 	    resp.setContentLength(fileByte.length);
-	    resp.setHeader("Content-Disposition", "attachment; fileName=\"" + URLEncoder.encode(fileName,"UTF-8")+"\";");
+	    fileName = service.getDisposition(fileName, service.getBrowser(req));
+	    resp.setHeader("Content-Disposition", "attachment; fileName=\"" + fileName+"\";");
 	    resp.setHeader("Content-Transfer-Encoding", "binary");
 	    resp.getOutputStream().write(fileByte);
 	     

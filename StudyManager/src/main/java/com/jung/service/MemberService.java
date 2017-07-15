@@ -1,6 +1,7 @@
 package com.jung.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.jung.domain.MemberBean;
 
@@ -13,4 +14,5 @@ public interface MemberService {
 	public void deleteMember(String id) throws Exception;
 	public List<MemberBean> getList() throws Exception;
 	public boolean dupIdCheck(String id) throws Exception;
+	public void regGroup(Map<String, Object> map) throws Exception;
 }

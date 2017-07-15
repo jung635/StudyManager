@@ -3,13 +3,11 @@ package com.jung.web;
 
 import java.io.PrintWriter;
 import java.text.DateFormat;
-import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -26,6 +24,7 @@ import com.jung.domain.AttendenceBean;
 import com.jung.domain.GroupBean;
 import com.jung.domain.MemberBean;
 import com.jung.service.GroupService;
+import com.jung.service.MemberService;
 
 @Controller
 @RequestMapping(value="/group/*")
@@ -33,6 +32,9 @@ public class GroupController {
 	
 	@Inject
 	private GroupService service;
+	
+	@Inject
+	private MemberService mservice;
 	
 	
 	@RequestMapping(value="/make", method=RequestMethod.GET)
@@ -42,11 +44,25 @@ public class GroupController {
 	
 	@RequestMapping(value="/make", method=RequestMethod.POST)
 	public String makePost(GroupBean gb, HttpSession session) throws Exception{
-		System.out.println(gb.getName());
+		System.out.println(gb.getAbsent_fee());
 		gb.setNum(service.getMaxNum()+1);
-		gb.setAdmin((String)session.getAttribute("id"));
+		String id = (String)session.getAttribute("id");
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		Calendar now = Calendar.getInstance();
+		String member = id + "/" + format.format(now.getTime());
+		gb.setAdmin(id);
+		gb.setMember(member);
 		service.groupMake(gb);
-		return "/member/main";
+		MemberBean mb = mservice.getInfo(id);
+		String group = "";
+		System.out.println(mb.getTeam());
+		if(mb.getTeam() == null) group = String.valueOf(gb.getNum());
+		else group = mb.getTeam() + "," + String.valueOf(gb.getNum());
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("group", group);
+		mservice.regGroup(map);
+		return "redirect:/member/main";
 	}
 	
 	@RequestMapping(value="/header", method=RequestMethod.GET)
@@ -86,8 +102,9 @@ public class GroupController {
 	@RequestMapping(value="/attendence", method=RequestMethod.POST)
 	public String  attendencePost(Model model, HttpSession session, GroupBean gb_form, @RequestParam("status") String status, 
 			@RequestParam("member_id") String member_id, HttpServletResponse resp) throws Exception{
+		int group_num = (Integer)session.getAttribute("group_num");
 		Calendar now = Calendar.getInstance();
-		if(service.getAttendenceByDateAndId(member_id, now.getTime()) != null){
+		if(service.getAttendenceListByDateGroup(member_id, now.getTime(), group_num) != null){
 			resp.setContentType("text/html; charset=utf-8");
 			PrintWriter out = resp.getWriter();
 			
@@ -100,15 +117,12 @@ public class GroupController {
 		}else{
 			AttendenceBean ab = new AttendenceBean();
 			ab.setId(member_id);//as member id입력
-			ab.setGroup_num(gb_form.getNum());//as group num 입력
 			ab.setNum(service.getMaxNumForAttendence()+1);
-			int group_num = (Integer)session.getAttribute("group_num");
+			ab.setGroup_num(group_num);//as group num 입력
 			if(status.equals("attend")){
 				ab.setStatus("attend");
 				DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				DateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
-				System.out.println(now.getTime());
-				ab.setDate(now.getTime());//as 오늘자 날짜 입력
 				String time = gb_form.getLate_start();
 				String max_time = gb_form.getLate_max();
 				if(max_time.split(":").length<3) max_time += ":00";
@@ -117,6 +131,7 @@ public class GroupController {
 				Date late_max_time = format.parse(format2.format((Date)now.getTime()) + " " + max_time);
 				Calendar late_time_cal = Calendar.getInstance();
 				late_time_cal.setTime(late_start_time);
+				System.out.println("현재시간: "+ format.parse(format.format(now.getTime())));
 				Calendar late_max_time_cal = Calendar.getInstance();
 				late_max_time_cal.setTime(late_max_time);
 				long late_interval = (now.getTimeInMillis() - late_time_cal.getTimeInMillis())/(60*1000);
@@ -139,15 +154,28 @@ public class GroupController {
 					ab.setLate_fee((int)((Math.ceil((double)late_interval/(double)gb_form.getLate_interval())))*gb_form.getLate_fee());//as late fee입력
 				}
 			}else{
-				ab.setStatus("absence");
+				ab.setStatus("absent");
 				ab.setDate(now.getTime());//as 오늘자 날짜 입력
 				ab.setLate_interval(-1);//as interval 입력
-				ab.setLate_fee(gb_form.getAbsent_fee());//as late fee입력
+				ab.setAbsent_fee(gb_form.getAbsent_fee());//as late fee입력
 			}
 			
 			service.insertAttendence(ab);
 		}
 		
-		return "/group/attendence";
+		return "redirect:/group/attendence";
+	}
+	
+	
+	@RequestMapping(value="/myChart", method=RequestMethod.GET)
+	public String  myChartGet(Model model, HttpSession session) throws Exception{
+		int group_num = (Integer)session.getAttribute("group_num");
+		GroupBean gb = service.getGroupDetail(group_num);
+		Date now = Calendar.getInstance().getTime();
+		//LinkedHashMap<Map<MemberBean, AttendenceBean>, GroupBean> group_map = service.getGroupMemberList(group_num, now);
+		LinkedHashMap<MemberBean, AttendenceBean> group_map = service.getGroupMemberList(group_num, now);
+		model.addAttribute("gb", gb);
+		model.addAttribute("group_map", group_map);
+		return "/group/myChart";
 	}
 }
