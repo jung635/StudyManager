@@ -25,7 +25,7 @@
 		where id=#{id}
 	</update>
 	
-	<update id="regGroup" parameterType="map">
+	<update id="updateGroup" parameterType="map">
 		update member set team=#{group} 
 		where id=#{id}
 	</update>
@@ -37,6 +37,11 @@
 	
 	<select id="getList" resultType="com.jung.domain.MemberBean">
 		select * from member
+	</select>
+	
+	<select id="searchMember" resultType="com.jung.domain.MemberBean">
+		select * from member
+		where id like #{id};
 	</select>
  
  </mapper>

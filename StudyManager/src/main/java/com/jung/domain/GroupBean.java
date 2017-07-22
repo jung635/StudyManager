@@ -5,9 +5,10 @@ import java.util.Date;
 import org.springframework.stereotype.Service;
 
 public class GroupBean {
-	private String name, board, late_max, late_start, admin, member;
+	private String name, board, late_max, late_start, admin, member, week, city, goal, category, hashTag;
 	private int num, late_interval, late_fee, late_maxFee, fee, absent_fee;
-	private Date date;
+	private Date date, reg_date;
+	private boolean secret;
 	
 	public String getName() {
 		return name;
@@ -86,6 +87,48 @@ public class GroupBean {
 	}
 	public void setAbsent_fee(int absent_fee) {
 		this.absent_fee = absent_fee;
+	}
+	public Date getReg_date() {
+		return reg_date;
+	}
+	public void setReg_date(Date reg_date) {
+		this.reg_date = reg_date;
+	}
+	public String getWeek() {
+		return week;
+	}
+	public void setWeek(String week) {
+		this.week = week;
+	}
+	public String getCity() {
+		return city;
+	}
+	public void setCity(String city) {
+		this.city = city;
+	}
+	public String getGoal() {
+		return goal;
+	}
+	public void setGoal(String goal) {
+		this.goal = goal;
+	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
+	}
+	public String getHashTag() {
+		return hashTag;
+	}
+	public void setHashTag(String hashTag) {
+		this.hashTag = hashTag;
+	}
+	public boolean isSecret() {
+		return secret;
+	}
+	public void setSecret(boolean secret) {
+		this.secret = secret;
 	}
 
 }

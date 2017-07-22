@@ -82,5 +82,27 @@ public class GroupDAOImple implements GroupDAO {
 	public AttendenceBean getAttendenceListByDateGroup(Map<String, Object> map) throws Exception {
 		return sqlSession.selectOne(namespace+".getAttendenceListByDateGroup", map);
 	}
+
+	@Override
+	public List<AttendenceBean> getAllFeeById(Map<String, Object> map) throws Exception {
+		return sqlSession.selectList(namespace+".getAllFeeById", map);
+	}
+
+	@Override
+	public List<AttendenceBean> getAllFee(int group_num) throws Exception {
+		return sqlSession.selectList(namespace+".getAllFee", group_num);
+	}
+
+	@Override
+	public void updateMember(Map<String, Object> map) throws Exception {
+		sqlSession.update(namespace+".updateMember", map);
+		
+	}
+
+	@Override
+	public List<GroupBean> groupSearch(Map<String, Object> map) throws Exception {
+		return sqlSession.selectList(namespace+".groupSearch", map);
+	}
+	
 	
 }

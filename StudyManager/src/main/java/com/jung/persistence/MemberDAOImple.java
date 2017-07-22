@@ -51,8 +51,13 @@ public class MemberDAOImple implements MemberDAO{
 	}
 
 	@Override
-	public void regGroup(Map<String, Object> map) throws Exception {
-		sqlSession.update(namespace+".regGroup", map);
+	public void updateGroup(Map<String, Object> map) throws Exception {
+		sqlSession.update(namespace+".updateGroup", map);
+	}
+
+	@Override
+	public List<MemberBean> getSearchList(String search_id) throws Exception {
+		return sqlSession.selectList(namespace+".searchMember", "%"+search_id+"%");
 	}
 	
 }

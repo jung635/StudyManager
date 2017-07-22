@@ -122,6 +122,33 @@ public class GroupServiceImple implements GroupService{
 		map.put("group_num", group_num);
 		return gdao.getAttendenceListByDateGroup(map);
 	}
+
+	@Override
+	public List<AttendenceBean> getAllFeeById(String id, int group_num) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("group_num", group_num);
+		return gdao.getAllFeeById(map);
+	}
+
+	@Override
+	public List<AttendenceBean> getAllFee(int group_num) throws Exception {
+		return gdao.getAllFee(group_num);
+	}
+
+	@Override
+	public void updateMember(String member, int group_num) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("member", member);
+		map.put("group_num", group_num);
+		gdao.updateMember(map);
+		
+	}
+
+	@Override
+	public List<GroupBean> groupSearch(Map<String, Object> map) throws Exception {
+		return gdao.groupSearch(map);
+	}
 	
 	
 }

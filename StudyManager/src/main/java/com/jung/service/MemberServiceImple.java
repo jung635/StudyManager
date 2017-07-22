@@ -68,8 +68,13 @@ public class MemberServiceImple implements MemberService{
 	}
 
 	@Override
-	public void regGroup(Map<String, Object> map) throws Exception {
-		mdao.regGroup(map);
+	public void updateGroup(Map<String, Object> map) throws Exception {
+		mdao.updateGroup(map);
+	}
+
+	@Override
+	public List<MemberBean> getSearchList(String search_id) throws Exception {
+		return mdao.getSearchList(search_id);
 	}
 	
 	

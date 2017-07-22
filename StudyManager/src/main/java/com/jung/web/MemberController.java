@@ -2,6 +2,10 @@ package com.jung.web;
 
 
 
+import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,9 +27,12 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.jung.domain.AlarmBean;
 import com.jung.domain.GroupBean;
 import com.jung.domain.MemberBean;
+import com.jung.service.AlarmService;
 import com.jung.service.CustomUserDetails;
 import com.jung.service.GroupService;
 import com.jung.service.MemberService;
@@ -41,10 +48,13 @@ public class MemberController {
 	private MemberService service;
 	
 	@Inject
-	private RegisterRequestValidator validator;
+	private RegisterRequestValidator validator; //주입을 사용하려면 그 사용하려는 클래스를 new로 객체화하면 안되고 주입해주어야한다!
 	
 	@Inject
 	private GroupService gservice;
+	
+	@Inject
+	private AlarmService aservice;
 	
 	@RequestMapping(value="/insert", method=RequestMethod.GET)
 	public String insertGet() throws Exception{
@@ -54,6 +64,7 @@ public class MemberController {
 	
 	@RequestMapping(value="/insert", method=RequestMethod.POST)
 	public String insertPost(@ModelAttribute("mb") MemberBean mb, Errors error, Model model) throws Exception{
+		//RegisterRequestValidator validator = new RegisterRequestValidator(); ->이렇게 하면 안됨!
 		validator.validate(mb, error);
 		if(error.hasErrors()){
 			return "/member/insertForm";
@@ -89,7 +100,7 @@ public class MemberController {
 		return "redirect:/member/main";
 	}
 	
-	@RequestMapping(value="/main", method=RequestMethod.GET)
+	@RequestMapping(value="/main2", method=RequestMethod.GET)
 	public String mainGet(HttpSession session, Model model) throws Exception{
 		String id = (String)session.getAttribute("id");
 		model.addAttribute("id", id);
@@ -105,6 +116,29 @@ public class MemberController {
 		
 		model.addAttribute("group_map", map);
 		return "/member/main";
+	}
+	@RequestMapping(value="/main", method=RequestMethod.GET)
+	public String mainGet2(HttpSession session, Model model) throws Exception{
+		String id = (String)session.getAttribute("id");
+		Map<Integer, GroupBean> map = new HashMap<Integer, GroupBean>();
+		model.addAttribute("id", id);
+		if(id != null){
+			if(service.getInfo(id).getTeam() != null){
+				String[] group_num = service.getInfo(id).getTeam().split(",");
+				for(int i=0; i<group_num.length; i++){
+					map.put(Integer.parseInt(group_num[i]), gservice.getGroupDetail(Integer.parseInt(group_num[i])));
+				}
+			}
+		}
+		
+		
+		model.addAttribute("group_map", map);
+		return "/member/main2";
+	}
+	
+	@RequestMapping(value="/header", method={ RequestMethod.GET, RequestMethod.POST })
+	public String manage_navGet() throws Exception{
+		return "/member/header";
 	}
 	
 	@RequestMapping(value="/info", method=RequestMethod.GET)
@@ -184,7 +218,6 @@ public class MemberController {
 	
 	@RequestMapping(value="/login_duplicate", method=RequestMethod.GET)
 	public String loginDuplicate() throws Exception{
-		System.out.println("Dubplicated");
 		return "/member/loginDuplicate";
 	}
 	
@@ -194,5 +227,63 @@ public class MemberController {
 		List<MemberBean> list = service.getList();
 		model.addAttribute("list", list);
 		return "/member/list";
+	}
+	
+	@RequestMapping(value="/alarmList", method=RequestMethod.GET)
+	public String AlarmListGet(HttpSession session, Model model) throws Exception{
+		String id = (String)session.getAttribute("id");
+		List<AlarmBean> alarmList = aservice.getBoardList(id);
+		model.addAttribute("alarmList", alarmList);
+		return "/member/alarmList";
+	}
+	
+	@RequestMapping(value="/invited", method=RequestMethod.GET)
+	public void  invitedGet(@RequestParam("group_num") int group_num,
+			Model model, HttpSession session, HttpServletResponse resp) throws Exception{
+		resp.setContentType("text/html; charset=utf-8");
+		PrintWriter out = resp.getWriter();
+		GroupBean gb = gservice.getGroupDetail(group_num);
+		String id = (String)session.getAttribute("id");
+		MemberBean mb = service.getInfo(id);
+		String group = "";
+		boolean joined_member = false;
+		if(mb.getTeam() == null){
+			group = String.valueOf(gb.getNum());
+		}else{
+			String[] team = mb.getTeam().split(",");
+			group = mb.getTeam() + "," + String.valueOf(gb.getNum());
+			for(int i=0; i<team.length; i++){
+				if(Integer.parseInt(team[i]) == group_num){
+					joined_member = true;
+				}
+			}
+		}
+		
+			
+		if(joined_member){
+			out.println("<script>");
+			out.println("alert('이미 가입한 그룹입니다.');");
+			out.println("window.close()");
+			out.println("</script>");
+		}else{
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("id", id);
+			map.put("group", group);
+			service.updateGroup(map);
+			
+			out.println("<script>");
+			out.println("alert('그룹에 가입이 완료되셨습니다.');");
+			out.println("window.close()");
+			out.println("</script>");
+			
+			DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			Calendar now = Calendar.getInstance();
+			String member = gb.getMember() + "," + id + "/" + format.format(now.getTime());
+			System.out.println(member);
+			gservice.updateMember(member, group_num);
+		}
+		out.flush();
+		out.close();
+		
 	}
 }

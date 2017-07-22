@@ -5,8 +5,8 @@
  
  <mapper namespace="com.jung.mapper.GroupMapper">
  	<insert id="makeGroup">
- 		insert into team (num, name, late_start, late_interval, late_fee, late_max, late_maxFee, absent_fee, fee, board, admin, date, member)
- 		values (#{num}, #{name}, #{late_start}, #{late_interval}, #{late_fee}, #{late_max}, #{late_maxFee}, #{absent_fee}, #{fee}, "공지사항, 자유게시판", #{admin}, now(), #{member})
+ 		insert into team (num, name, late_start, late_interval, late_fee, late_max, late_maxFee, absent_fee, fee, board, admin, date, member, reg_date, week, city, goal, category, hashTag, secret)
+ 		values (#{num}, #{name}, #{late_start}, #{late_interval}, #{late_fee}, #{late_max}, #{late_maxFee}, #{absent_fee}, #{fee}, #{board}, #{admin}, now(), #{member}, now(), #{week}, #{city}, #{goal}, #{category}, #{hashTag}, #{secret})
  	</insert>
  	
  	<select id="getMaxNum" resultType="Integer">
@@ -55,5 +55,43 @@
  	<select id="getAttendenceListByDateGroup" parameterType="map" resultType="com.jung.domain.AttendenceBean">
  		select * from attendence
  		where id = #{id} and date = #{date} and group_num = #{group_num}
+ 	</select>
+ 	
+ 	<select id="getAllFeeById" parameterType="map" resultType="com.jung.domain.AttendenceBean">
+ 		select * from attendence
+ 		where id = #{id} and group_num = #{group_num}
+ 	</select>
+ 	
+ 	<select id="getAllFee" parameterType="map" resultType="com.jung.domain.AttendenceBean">
+ 		select * from attendence
+ 		where group_num = #{group_num}
+ 	</select>
+ 	
+ 	<update id="updateMember" parameterType="map">
+		update team set member = #{member}
+		where num=#{group_num}
+	</update>
+	
+	<select id="groupSearch" parameterType="map" resultType="com.jung.domain.GroupBean">
+ 		select * from team where (secret = 0)
+ 		<if test="week != null">
+ 			and
+ 			<foreach item="week" open="(" close=")" separator="or" collection="week">
+ 				week like concat('%',#{week},'%')
+ 			</foreach>
+ 		</if>
+ 		<if test="city != null and city != ''">
+ 			and (city = #{city})
+ 		</if>
+ 		<if test="goal != null and goal != ''">
+ 			and (goal = #{goal})
+ 		</if>
+ 		<if test="category != null and category != ''">
+ 			and (category like concat('%',#{category},'%'))
+ 		</if>
+ 		<if test="search_input != null and search_input != ''">
+ 			and (hashTag like concat('%',#{search_input},'%') or name like concat('%',#{search_input},'%'))
+ 			
+ 		</if>
  	</select>
  </mapper>

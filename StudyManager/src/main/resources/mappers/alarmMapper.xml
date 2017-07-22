@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <mapper namespace="com.jung.mapper.AlarmMapper">
+ 	<insert id="insertAlarm">
+ 		insert into alarm (num, id, content, status, date, move)
+ 		values (#{num}, #{id}, #{content}, "now", now(), #{move})
+ 	</insert>
+ 	
+ 	<select id="getMaxNum" resultType="Integer">
+ 		select max(num) from alarm
+ 	</select>
+ 	
+ 	<select id="getAlarmList" resultType="com.jung.domain.AlarmBean">
+ 		select * from alarm
+ 		where id = #{id}
+ 		order by date desc
+ 	</select>
+ </mapper>

@@ -6,7 +6,6 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
 <style>
 ul {
     list-style-type: none;
@@ -44,7 +43,7 @@ li a:hover {
 	</c:forEach>
 	<c:if test="${gb.admin eq id }">
 		<li><a href="<c:url value="/group/attendence"/>">출석 관리</a></li>
-		<li><a href="">그룹 관리</a>
+		<li><a href="<c:url value="/group/manageMember"/>">그룹 관리</a>
 	</c:if>
 	<li><a href="<c:url value="/group/myChart"/>">내 정보</a></li>
 	<li id="group_name"><a href="<c:url value="/group/attendence"/>">그룹이름: "${gb.name }"</a></li>

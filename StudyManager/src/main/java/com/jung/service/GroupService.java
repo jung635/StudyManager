@@ -23,4 +23,8 @@ public interface GroupService {
 	public AttendenceBean getAttendenceDetail(String id) throws Exception;
 	public AttendenceBean getAttendenceByDateAndId(String id, Date date) throws Exception;
 	public AttendenceBean getAttendenceListByDateGroup(String id, Date date, int group_num) throws Exception;
+	public List<AttendenceBean> getAllFeeById(String id, int group_num) throws Exception;
+	public List<AttendenceBean> getAllFee(int group_num) throws Exception;
+	public void updateMember(String id, int group_num) throws Exception;
+	public List<GroupBean> groupSearch(Map<String, Object> map) throws Exception;
 }

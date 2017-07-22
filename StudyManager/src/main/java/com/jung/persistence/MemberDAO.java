@@ -12,5 +12,6 @@ public interface MemberDAO {
 	public void updateMember(MemberBean mb) throws Exception;
 	public void deleteMember(String id) throws Exception;
 	public List<MemberBean> getList() throws Exception;
-	public void regGroup(Map<String, Object> map) throws Exception;
+	public void updateGroup(Map<String, Object> map) throws Exception;
+	public List<MemberBean> getSearchList(String search_id) throws Exception;
 }

@@ -147,7 +147,9 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value="/update", method=RequestMethod.POST)
-	public void updatePost(BoardBean bb, @RequestParam("pass") String pass,@RequestParam("pageNum") int pageNum,@RequestParam("file_ori") String file_ori, @RequestParam("fileInput") MultipartFile file ,HttpServletRequest req, HttpSession session, HttpServletResponse resp) throws Exception{
+	public void updatePost(BoardBean bb, @RequestParam("pass") String pass,@RequestParam("pageNum") int pageNum,
+			@RequestParam("file_ori") String file_ori, @RequestParam("fileInput") MultipartFile file ,HttpServletRequest req,
+			HttpSession session, HttpServletResponse resp) throws Exception{
 		resp.setContentType("text/html; charset=utf-8");
 		PrintWriter out = resp.getWriter();
 		MemberBean mb = mservice.getInfo((String)session.getAttribute("id"));

@@ -20,5 +20,9 @@ public interface GroupDAO {
 	public AttendenceBean getAttendenceDetail(String id) throws Exception;
 	public AttendenceBean getAttendenceByDateAndId(Map<String, String> map) throws Exception;
 	public AttendenceBean getAttendenceListByDateGroup(Map<String, Object> map) throws Exception;
+	public List<AttendenceBean> getAllFeeById(Map<String, Object> map) throws Exception;
+	public List<AttendenceBean> getAllFee(int group_num) throws Exception;
+	public void updateMember(Map<String, Object> map) throws Exception;
+	public List<GroupBean> groupSearch(Map<String, Object> map) throws Exception;
 
 }
