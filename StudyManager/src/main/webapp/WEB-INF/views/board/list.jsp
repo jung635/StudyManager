@@ -27,15 +27,15 @@
 	</table>
 	<div class="text_center" style="margin-top: 20px">
 	<c:if test="${pageMaker.startPage }>${pageMaker.pageBlock }">
-	<a href="<c:url value="/board/list?pageNum=${pageMaker.startPage }-${pageMaker.pageBlock}&board_name=${board_name }"/>">[이전]</a>&nbsp;
+	<a href="<c:url value="/board/list?pageNum=${pageMaker.startPage }-${pageMaker.pageBlock}&board_num=${board_num }"/>">[이전]</a>&nbsp;
 	</c:if>
 	<c:forEach var="i" begin="${pageMaker.startPage }" end="${pageMaker.endPage }" step="1">
-	<a href='<c:url value="/board/list?pageNum=${i }&board_name=${board_name }"/>'>[${i }]</a>
+	<a href='<c:url value="/board/list?pageNum=${i }&board_num=${board_num }"/>'>[${i }]</a>
 	</c:forEach>
 	<c:if test="${pageMaker.endPage }<${pageMaker.pageCount }">
-	<a href="<c:url value="/board/list?pageNum=${pageMaker.startPage }+${pageMaker.pageBlock}&board_name=${board_name }"/>">[다음]</a>&nbsp;
+	<a href="<c:url value="/board/list?pageNum=${pageMaker.startPage }+${pageMaker.pageBlock}&board_num=${board_num }"/>">[다음]</a>&nbsp;
 	</c:if>
-	<input type="button" value="글쓰기" onclick="location.href='<c:url value="/board/write?board_name=${board_name }"/>'">
+	<input type="button" value="글쓰기" onclick="location.href='<c:url value="/board/write?board_num=${board_num }"/>'">
 	</div>
 </div>
 </body>

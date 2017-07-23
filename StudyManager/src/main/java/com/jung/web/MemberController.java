@@ -126,7 +126,7 @@ public class MemberController {
 		Map<Integer, GroupBean> group_map = new HashMap<Integer, GroupBean>();
 		model.addAttribute("id", id);
 		if(id != null){
-			if(service.getInfo(id).getTeam() != null){
+			if(service.getInfo(id).getTeam() != null && service.getInfo(id).getTeam().trim().length() != 0){
 				String[] group_num = service.getInfo(id).getTeam().split(",");
 				for(int i=0; i<group_num.length; i++){
 					group_map.put(Integer.parseInt(group_num[i]), gservice.getGroupDetail(Integer.parseInt(group_num[i])));
@@ -260,9 +260,11 @@ public class MemberController {
 		}else{
 			String[] team = mb.getTeam().split(",");
 			group = mb.getTeam() + "," + String.valueOf(gb.getNum());
-			for(int i=0; i<team.length; i++){
-				if(Integer.parseInt(team[i]) == group_num){
-					joined_member = true;
+			if(mb.getTeam() != null && mb.getTeam().trim().length() != 0){
+				for(int i=0; i<team.length; i++){
+					if(Integer.parseInt(team[i]) == group_num){
+						joined_member = true;
+					}
 				}
 			}
 		}

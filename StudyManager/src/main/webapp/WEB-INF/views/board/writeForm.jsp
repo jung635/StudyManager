@@ -18,7 +18,7 @@
 	<tr><td>내용 <textarea name="content" cols="60" rows="15"></textarea></td></tr>
 	<tr><td>첨부파일 <input type="file" name="fileInput"></td></tr>
 	</table>
-	<input type="hidden" name="board_name" value="${board_name }">
+	<input type="hidden" name="board_num" value="${board_num }">
 	<div class="text_center" style="margin-top: 20px">
 		<input type="submit" value="등록">
 		<input type="button" value="취소" onclick="history.back()">

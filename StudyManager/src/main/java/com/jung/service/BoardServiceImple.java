@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 
 import com.jung.domain.BoardBean;
+import com.jung.domain.BoardTeamBean;
 import com.jung.persistence.BoardDAO;
 @Service
 public class BoardServiceImple implements BoardService{
@@ -106,5 +107,19 @@ public class BoardServiceImple implements BoardService{
 		return bdao.getListCountByGroup(group_num);
 	}
 
-	
+	@Override
+	public void insertBoardTeam(BoardTeamBean bt) throws Exception {
+		bdao.insertBoardTeam(bt);
+	}
+
+	@Override
+	public int getMaxNumBoardTeam() throws Exception {
+		return bdao.getMaxNumBoardTeam();
+	}
+
+	@Override
+	public List<BoardBean> getBoardTeamListByGroup(int group_num) throws Exception {
+		return bdao.getBoardTeamListByGroup(group_num);
+	}
+
 }

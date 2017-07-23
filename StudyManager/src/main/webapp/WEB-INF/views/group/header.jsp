@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
         <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"  %>
-        <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -10,8 +9,8 @@
 <body>
 <div class="container">
 	<ul class="group_ul">
-		<c:forEach items="${board }" begin="0" end="${length }" step="1" var="boardValues">
-			<li><a href="<c:url value="/board/list?board_name=${fn:trim(boardValues) }"/>">${boardValues }</a></li>
+		<c:forEach items="${board }" var="board">
+			<li><a href="<c:url value="/board/list?board_num=${board.board_num }"/>">${board.name }</a></li>
 		</c:forEach>
 		<c:if test="${gb.admin eq id }">
 			<li><a href="<c:url value="/group/attendence"/>">출석 관리</a></li>

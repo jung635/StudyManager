@@ -5,8 +5,8 @@
  
  <mapper namespace="com.jung.mapper.BoardMapper">
  	<insert id="insertBoard">
- 		insert into board (num, name, subject, content, readcount, ip, date, re_lev, re_seq, file, fileName, group_num, board_name)
- 		values (#{num}, #{name}, #{subject}, #{content}, 0, #{ip}, now(), 0, 0, #{file}, #{fileName}, #{group_num}, #{board_name})
+ 		insert into board (num, name, subject, content, readcount, ip, date, re_lev, re_num, file, fileName, group_num, board_num)
+ 		values (#{num}, #{name}, #{subject}, #{content}, 0, #{ip}, now(), 0, 0, #{file}, #{fileName}, #{group_num}, #{board_num})
  	</insert>
  	
  	<select id="getMaxNum" resultType="Integer">
@@ -15,7 +15,7 @@
  	
  	<select id="getBoardList" parameterType="map" resultType="com.jung.domain.BoardBean">
  		select * from board
- 		where group_num=#{group_num} and board_name=#{board_name}
+ 		where group_num=#{group_num} and board_num=#{board_num}
  		order by date desc
  		limit #{start},#{pageSize}
  	</select>
@@ -28,7 +28,7 @@
  	
  	<select id="getListCount" parameterType="map" resultType="Integer">
  		select count(*) from board 
- 		where group_num=#{group_num} and board_name=#{board_name}
+ 		where group_num=#{group_num} and board_num=#{board_num}
  	</select>
  	
  	<select id="getListCountByGroup" resultType="Integer">
@@ -55,5 +55,19 @@
  		delete from board
  		where num=#{num}
  	</delete>
+ 	
+	<insert id="insertBoardTeam">
+ 		insert into boardTeam (board_num, group_num, name, write_auth, comment_auth)
+ 		values (#{board_num}, #{group_num}, #{name}, #{write_auth}, #{comment_auth})
+ 	</insert>
+ 	
+ 	<select id="getMaxNumBoardTeam" resultType="Integer">
+ 		select max(board_num) from boardTeam
+ 	</select>
+ 	
+ 	<select id="getBoardTeamListByGroup" resultType="com.jung.domain.BoardTeamBean">
+ 		select * from boardTeam 
+ 		where group_num=#{group_num}
+ 	</select>
  	
  </mapper>

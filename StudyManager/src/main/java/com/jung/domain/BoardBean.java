@@ -3,8 +3,8 @@ import java.sql.Timestamp;
 
 public class BoardBean {
 	
-	private String name, subject, content, ip, file, fileName, board_name;
-	private int num, readcount, re_lev, re_seq, group_num;
+	private String name, subject, content, ip, file, fileName;
+	private int num, readcount, re_lev, re_num, group_num, board_num;
 	private Timestamp date;
 	
 	
@@ -56,11 +56,11 @@ public class BoardBean {
 	public void setRe_lev(int re_lev) {
 		this.re_lev = re_lev;
 	}
-	public int getRe_seq() {
-		return re_seq;
+	public int getRe_num() {
+		return re_num;
 	}
-	public void setRe_seq(int re_seq) {
-		this.re_seq = re_seq;
+	public void setRe_num(int re_num) {
+		this.re_num = re_num;
 	}
 	public Timestamp getDate() {
 		return date;
@@ -80,11 +80,11 @@ public class BoardBean {
 	public void setGroup_num(int group_num) {
 		this.group_num = group_num;
 	}
-	public String getBoard_name() {
-		return board_name;
+	public int getBoard_num() {
+		return board_num;
 	}
-	public void setBoard_name(String board_name) {
-		this.board_name = board_name;
+	public void setBoard_num(int board_num) {
+		this.board_num = board_num;
 	}
 
 }

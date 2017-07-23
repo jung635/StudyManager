@@ -40,8 +40,8 @@ public class BoardController {
 	private GroupService gservice;
 	
 	@RequestMapping(value="/write", method=RequestMethod.GET)
-	public String insertGet(@RequestParam("board_name") String board_name, Model model) throws Exception{
-		model.addAttribute("board_name", board_name);
+	public String insertGet(@RequestParam("board_num") String board_num, Model model) throws Exception{
+		model.addAttribute("board_num", board_num);
 		return "/board/writeForm";
 	}
 	
@@ -72,20 +72,20 @@ public class BoardController {
 		int group_num = (Integer)session.getAttribute("group_num");
 		bb.setGroup_num(group_num);
 		service.insertBoard(bb);
-		redirect.addAttribute("board_name", bb.getBoard_name());
+		redirect.addAttribute("board_num", bb.getBoard_num());
 		redirect.addAttribute("pageNum", 1);
 		return "redirect:/board/list";
 	}
 	
 	@RequestMapping(value="/list", method=RequestMethod.GET)
-	public String listGet(Model model, HttpServletRequest req, @RequestParam("board_name") String board_name, 
+	public String listGet(Model model, HttpServletRequest req, @RequestParam("board_num") String board_num, 
 			HttpSession session) throws Exception{
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setPageBlock(10);
 		pageMaker.setPageSize(10);
 		Map<String, Object> count_map = new HashMap<String, Object>();
 		count_map.put("group_num", (Integer)session.getAttribute("group_num"));
-		count_map.put("board_name", board_name);
+		count_map.put("board_num", board_num);
 		pageMaker.setCount(service.getListCount(count_map));
 		System.out.println(service.getListCount(count_map));
 		int pageNum;
@@ -94,14 +94,13 @@ public class BoardController {
 		pageMaker.setPageNum(pageNum);
 		Map<String, Object> pageMap = new HashMap<String, Object>();
 		int start = (pageMaker.getPageSize()*(pageNum-1));
-		System.out.println("start: "+start);
 		pageMap.put("start", start);
 		pageMap.put("pageSize", pageMaker.getPageSize());
 		pageMap.put("group_num", (Integer)session.getAttribute("group_num"));
-		pageMap.put("board_name", board_name);
+		pageMap.put("board_num", board_num);
 		model.addAttribute("boardList", service.getBoardList(pageMap));
 		model.addAttribute("pageMaker", pageMaker);
-		model.addAttribute("board_name", board_name);
+		model.addAttribute("board_num", board_num);
 		return "/board/list";
 	}
 	
@@ -197,12 +196,14 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value="/delete", method=RequestMethod.GET)
-	public String deleteGet(Model model, HttpSession session,@RequestParam("num") int num) throws Exception{
+	public String deleteGet(Model model, HttpSession session,@RequestParam("num") int num, 
+			@RequestParam("board_num") int board_num) throws Exception{
 		BoardBean bb = service.getContent(num);
 		String url;
 		if(!((String)session.getAttribute("id")).equals(bb.getName())){
 			url = "board/updateReject";
 		}else{
+			model.addAttribute("board_num", board_num);
 			model.addAttribute("num", num);
 			model.addAttribute("id", (String)session.getAttribute("id"));
 			url = "board/deleteForm";
@@ -212,7 +213,8 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value="/delete", method=RequestMethod.POST)
-	public void deletePost(@RequestParam("num") int num, @RequestParam("pass") String pass, HttpServletResponse resp, HttpSession session) throws Exception{
+	public void deletePost(@RequestParam("num") int num, @RequestParam("pass") String pass, 
+			HttpServletResponse resp, HttpSession session, @RequestParam("board_num") int board_num) throws Exception{
 		resp.setContentType("text/html; charset=utf-8");
 		PrintWriter out = resp.getWriter();
 		MemberBean mb = mservice.getInfo((String)session.getAttribute("id"));
@@ -220,7 +222,7 @@ public class BoardController {
 			service.deleteBoard(num);
 			out.println("<script>");
 			out.println("alert('삭제가 완료되었습니다.');");
-			out.println("location.href='/web/board/list';");
+			out.println("location.href='/web/board/list?board_num="+board_num+"';");
 			out.println("</script>");
 			out.flush();
 			out.close();

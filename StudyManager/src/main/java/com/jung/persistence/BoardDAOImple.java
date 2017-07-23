@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.jung.domain.BoardBean;
+import com.jung.domain.BoardTeamBean;
 import com.jung.domain.PageMaker;
 @Repository
 public class BoardDAOImple implements BoardDAO{
@@ -70,6 +71,25 @@ public class BoardDAOImple implements BoardDAO{
 	@Override
 	public int getListCountByGroup(int group_num) throws Exception {
 		return sqlSession.selectOne(namespace+".getListCountByGroup", group_num);
+	}
+
+	@Override
+	public void insertBoardTeam(BoardTeamBean bt) throws Exception {
+		sqlSession.insert(namespace+".insertBoardTeam", bt);
+	}
+
+	@Override
+	public int getMaxNumBoardTeam() throws Exception {
+		int max;
+		if(sqlSession.selectOne(namespace+".getMaxNumBoardTeam") == null) max = 0;
+		else max = sqlSession.selectOne(namespace+".getMaxNumBoardTeam");
+		
+		return max;
+	}
+
+	@Override
+	public List<BoardBean> getBoardTeamListByGroup(int group_num) throws Exception {
+		return sqlSession.selectList(namespace+".getBoardTeamListByGroup", group_num);
 	}
 	
 	

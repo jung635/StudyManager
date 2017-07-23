@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import com.jung.domain.BoardBean;
+import com.jung.domain.BoardTeamBean;
 import com.jung.domain.PageMaker;
 
 public interface BoardService {
@@ -21,4 +22,7 @@ public interface BoardService {
 	public void deleteBoard(int num) throws Exception;
 	public String getBrowser(HttpServletRequest request) throws Exception;
 	public String getDisposition(String filename, String browser) throws Exception;
+	public void insertBoardTeam(BoardTeamBean bt) throws Exception;
+	public int getMaxNumBoardTeam() throws Exception;
+	public List<BoardBean> getBoardTeamListByGroup(int group_num) throws Exception;
 }

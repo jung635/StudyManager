@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.jung.domain.BoardBean;
+import com.jung.domain.BoardTeamBean;
 import com.jung.domain.PageMaker;
 
 public interface BoardDAO {
@@ -17,4 +18,7 @@ public interface BoardDAO {
 	public void updateBoard(BoardBean bb) throws Exception;
 	public void updateReadCount(int num) throws Exception;
 	public void deleteBoard(int num) throws Exception;
+	public void insertBoardTeam(BoardTeamBean bt) throws Exception;
+	public int getMaxNumBoardTeam() throws Exception;
+	public List<BoardBean> getBoardTeamListByGroup(int group_num) throws Exception;
 }

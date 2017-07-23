@@ -18,10 +18,21 @@
 		<tr><td>내용</td><td>${bb.content }</td></tr>
 		<tr><td>첨부파일</td><td><a href="<c:url value='/board/fileDownload?file=${bb.file }&fileName=${bb.fileName }'/>">${bb.fileName }</a></td></tr>
 	</table>
+	
+	<div id="reply_form">
+		<form action="rewritePro.jsp">
+		<textarea name="content" cols="60" rows="2"></textarea>
+		<input type="hidden" name="num" value="${bb.num }">
+		<input type="hidden" name="group_num" value="${bb.group_num }">
+		<input type="hidden" name="board_num" value="${bb.board_num }">
+		<input type="hidden" name="num" value="${bb.num }">
+		<input type="submit" value="댓글등록">
+		</form>
+	</div>
 	<div class="text_center" style="margin-top: 20px">
 		<input type="button" value="수정하기" onclick="location.href='<c:url value="/board/update?num=${bb.num }&pageNum=${pageNum }"/>'">
-		<input type="button" value="삭제하기" onclick="location.href='<c:url value="/board/delete?num=${bb.num }"/>'">
-		<input type="button" value="목록돌아가기" onclick="location.href='<c:url value="/board/list?pageNum=${pageNum }&board_name=${bb.board_name }"/>'">
+		<input type="button" value="삭제하기" onclick="location.href='<c:url value="/board/delete?num=${bb.num }&board_num=${bb.board_num }"/>'">
+		<input type="button" value="목록돌아가기" onclick="location.href='<c:url value="/board/list?pageNum=${pageNum }&board_num=${bb.board_num }"/>'">
 	</div>
 </div>
 </body>

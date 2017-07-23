@@ -4,6 +4,7 @@ package com.jung.web;
 import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -24,9 +25,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.jung.domain.AlarmBean;
 import com.jung.domain.AttendenceBean;
+import com.jung.domain.BoardTeamBean;
 import com.jung.domain.GroupBean;
 import com.jung.domain.MemberBean;
 import com.jung.service.AlarmService;
+import com.jung.service.BoardService;
 import com.jung.service.GroupService;
 import com.jung.service.MemberService;
 
@@ -42,6 +45,9 @@ public class GroupController {
 	
 	@Inject
 	private AlarmService aservice;
+	
+	@Inject
+	private BoardService bservice;
 	@RequestMapping(value="/make", method=RequestMethod.GET)
 	public String makeGet() throws Exception{
 		return "/group/make";
@@ -58,10 +64,24 @@ public class GroupController {
 		String member = id + "/" + format.format(now.getTime());
 		gb.setAdmin(id);
 		gb.setMember(member);
+		String[] board_arr = gb.getBoard().split(",");
+		String board_str = "";
+		for(int i=0; i<board_arr.length; i++){
+			board_str += board_arr[i]+","+i+"/";
+			BoardTeamBean bt = new BoardTeamBean();
+			bt.setBoard_num(bservice.getMaxNumBoardTeam()+1);
+			bt.setName(board_arr[i]);
+			bt.setGroup_num(gb.getNum());
+			bt.setWrite_auth("all");
+			bt.setComment_auth("all");
+			bservice.insertBoardTeam(bt);
+		}
+		gb.setBoard(board_str.substring(0, board_str.length()-1));
 		service.groupMake(gb);
+		
 		MemberBean mb = mservice.getInfo(id);
 		String group = "";
-		if(mb.getTeam() == null) group = String.valueOf(gb.getNum());
+		if(mb.getTeam() == null || mb.getTeam().trim().length() == 0) group = String.valueOf(gb.getNum());
 		else group = mb.getTeam() + "," + String.valueOf(gb.getNum());
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("id", id);
@@ -74,9 +94,7 @@ public class GroupController {
 	public String headerGet(Model model, HttpSession session) throws Exception{
 		int group_num = (Integer)session.getAttribute("group_num");
 		GroupBean gb = service.getGroupDetail(group_num);
-		String[] board_arr = gb.getBoard().split(",");
-		model.addAttribute("board", board_arr);
-		model.addAttribute("length", board_arr.length);
+		model.addAttribute("board", bservice.getBoardTeamListByGroup(group_num));
 		model.addAttribute("gb", gb);
 		model.addAttribute("id", (String)session.getAttribute("id"));
 		return "/group/header";
@@ -357,9 +375,14 @@ public class GroupController {
 	public String  manageBoardGet(Model model, HttpSession session) throws Exception{
 		int group_num = (Integer)session.getAttribute("group_num");
 		GroupBean gb = service.getGroupDetail(group_num);
-		String[] board_arr = gb.getBoard().split(",");
-		model.addAttribute("board", board_arr);
-		model.addAttribute("length", board_arr.length);
+		if(gb.getBoard() != null){
+			String[] board_arr = gb.getBoard().split(",");
+			model.addAttribute("board", board_arr);
+			model.addAttribute("length", board_arr.length);
+		}else{
+			model.addAttribute("board", new String[0]);
+			model.addAttribute("length", 0);
+		}
 		model.addAttribute("gb", gb);
 		return "/group/board_manage";
 	}
