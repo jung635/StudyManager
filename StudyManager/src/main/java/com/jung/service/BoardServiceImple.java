@@ -96,5 +96,15 @@ public class BoardServiceImple implements BoardService{
 		 
 		}
 
+	@Override
+	public List<BoardBean> getBoardListByGroup(Map<String, Object> pageMap) throws Exception {
+		return bdao.getBoardListByGroup(pageMap);
+	}
+
+	@Override
+	public int getListCountByGroup(int group_num) throws Exception {
+		return bdao.getListCountByGroup(group_num);
+	}
+
 	
 }

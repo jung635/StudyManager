@@ -8,15 +8,18 @@
 <title>Insert title here</title>
 </head>
 <body>
+<c:import url="/member/header" />
 <c:import url="/group/header" />
+<div class="container">
 <c:import url="/group/manage_nav" />
-<div id="content">
-	<h2>게시판 관리</h2>
+	<div id="right_nav_content">
+		<div class="title"><h1>게시판관리</h1></div>
 		<table border="1">
 			<c:forEach items="${board }" begin="0" end="${length }" step="1" var="boardValues">
 				<tr><td>${boardValues }</td><td><input type="button" value="관리"></td></tr>
 			</c:forEach>
 		</table>
+	</div>
 </div>
 </body>
 </html>

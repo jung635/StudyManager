@@ -149,6 +149,31 @@ public class GroupServiceImple implements GroupService{
 	public List<GroupBean> groupSearch(Map<String, Object> map) throws Exception {
 		return gdao.groupSearch(map);
 	}
-	
+
+	@Override
+	public void payDone(int attend_num) throws Exception {
+		gdao.payDone(attend_num);
+	}
+
+	@Override
+	public void attendDel(int attend_num) throws Exception {
+		gdao.attendDel(attend_num);
+	}
+
+	@Override
+	public AttendenceBean getFeeByNum(int num) throws Exception {
+		return gdao.getFeeByNum(num);
+	}
+
+	@Override
+	public void updateAttend(AttendenceBean ab) throws Exception {
+		gdao.updateAttend(ab);
+	}
+
+	@Override
+	public void updateGroup(GroupBean gb) throws Exception {
+		gdao.updateGroup(gb);
+		
+	}
 	
 }

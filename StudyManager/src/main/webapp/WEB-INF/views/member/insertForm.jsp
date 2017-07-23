@@ -7,6 +7,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+		<link href="<c:url value='/resources/css/anonymous.css'/>" rel="stylesheet">
 <script type="text/javascript">
 function checkDupId(){
 	id = document.getElementById("id").value;
@@ -34,17 +35,25 @@ function submitCheck(){
 </script>
 </head>
 <body>
-<form:form action="/web/member/insert" commandName="mb" method="post" name="fr" onsubmit="return submitCheck()">
- 아이디:<input type="text" id="id" name="id" value="${mb.id }"><form:errors path="id"/>
- <input type="button" value="아이디 중복 확인" onclick="checkDupId()"><br>
-비밀번호 :<input type="password" name="pass" value="${mb.pass }"><form:errors path="pass"/><br>
-이름 :<input type="text" name="name" value="${mb.name }"><form:errors path="name"/><br>
-나이 :<input type="number" name="age" value="${mb.age }"><form:errors path="age"/><br>
-성별 :<input type="radio" name="gender" value="남" <c:if test="${mb.gender eq '남' }">checked</c:if>>남
-<input type="radio" name="gender" value="여" <c:if test="${mb.gender eq '여' }">checked</c:if>>여<br>
-email :<input type="text" name="email" value="${mb.email }"><form:errors path="email"/><br>
-<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-<input type="submit" value="회원가입">
-</form:form>
+<div class="login_container">
+	<h2>SignUp Form</h2>
+	<form:form action="/web/member/insert" commandName="mb" method="post" name="fr" onsubmit="return submitCheck()"  style="border:1px solid #ccc; padding: 20px;">
+	<div class="container">
+		<label><b>아이디</b></label>
+		<input type="text" id="id" name="id" value="${mb.id }"><form:errors path="id"/>
+		<input type="button" value="아이디 중복 확인" onclick="checkDupId()"><br>
+		<label><b>비밀번호</b></label>
+		<input type="password" name="pass" value="${mb.pass }"><form:errors path="pass"/><br>
+		<label><b>이름</b></label>
+		<input type="text" name="name" value="${mb.name }"><form:errors path="name"/><br>
+		<label><b>email</b></label><input type="text" name="email" value="${mb.email }"><form:errors path="email"/><br>
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+		<div class="clearfix">
+		    <button type="button" class="cancelbtn" onclick="history.back()">Cancel</button>
+		    <button type="submit" class="signupbtn">Sign Up</button>
+	    </div>
+	</div>
+	</form:form>
+</div>
 </body>
 </html>

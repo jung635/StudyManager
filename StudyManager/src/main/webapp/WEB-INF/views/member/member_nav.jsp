@@ -8,11 +8,10 @@
 <title>Insert title here</title>
 </head>
 <body>
-<ul class="manage_nav">
-  <li class="manage_nav_li"><a href="<c:url value="/group/manageMember"/>">멤버 관리</a></li>
-  <li class="manage_nav_li"><a href="<c:url value="/group/manageBoard"/>">게시판 관리</a></li>
-  <li class="manage_nav_li"><a href="<c:url value="/group/manageFee"/>">벌금 관리</a></li>
-  <li class="manage_nav_li"><a href="<c:url value="/group/manageGroup"/>">그룹 관리</a></li>
+<ul class="manage_nav" style="height: 110px;">
+  <li class="manage_nav_li"><a href="<c:url value="/member/info"/>">회원정보</a></li>
+  <li class="manage_nav_li"><a href="<c:url value="/member/update"/>">회원정보수정</a></li>
+  <li class="manage_nav_li"><a href="<c:url value="/member/delete"/>">회원탈퇴</a></li>
 </ul>
 </body>
 </html>

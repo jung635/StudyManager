@@ -8,8 +8,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<table border="1">
-		<th>아이디</th><th>이름</th><th>이메일</th><th></th>
+	<table id="add_member_search_table">
  		<c:forEach items="${memberList }" var="mb">
  		<tr><td>${mb.id }</td><td>${mb.name }</td><td>${mb.email }</td>
  			<td><input type="button" value="초대" onclick="location.href='<c:url value="/group/invite?invite_id=${mb.id }"/>'"></td></tr>

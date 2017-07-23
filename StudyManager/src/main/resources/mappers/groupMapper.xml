@@ -5,8 +5,8 @@
  
  <mapper namespace="com.jung.mapper.GroupMapper">
  	<insert id="makeGroup">
- 		insert into team (num, name, late_start, late_interval, late_fee, late_max, late_maxFee, absent_fee, fee, board, admin, date, member, reg_date, week, city, goal, category, hashTag, secret)
- 		values (#{num}, #{name}, #{late_start}, #{late_interval}, #{late_fee}, #{late_max}, #{late_maxFee}, #{absent_fee}, #{fee}, #{board}, #{admin}, now(), #{member}, now(), #{week}, #{city}, #{goal}, #{category}, #{hashTag}, #{secret})
+ 		insert into team (num, name, late_start, late_interval, late_fee, late_max, late_maxFee, absent_fee, fee, board, admin, date, member, week, city, goal, category, hashTag, secret, start_time, rule)
+ 		values (#{num}, #{name}, #{late_start}, #{late_interval}, #{late_fee}, #{late_max}, #{late_maxFee}, #{absent_fee}, #{fee}, #{board}, #{admin}, now(), #{member}, #{week}, #{city}, #{goal}, #{category}, #{hashTag}, #{secret}, #{start_time}, #{rule})
  	</insert>
  	
  	<select id="getMaxNum" resultType="Integer">
@@ -24,8 +24,8 @@
  	</select>
  	
  	<insert id="insertAttendence">
- 		insert into attendence (num, group_num, attend_time, date, late_interval, late_fee, fee, id, absent_fee, status)
- 		values (#{num}, #{group_num}, now(), now(), #{late_interval}, #{late_fee}, #{fee}, #{id}, #{absent_fee}, #{status})
+ 		insert into attendence (num, group_num, attend_time, date, late_interval, late_fee, fee, id, absent_fee, status, payed)
+ 		values (#{num}, #{group_num}, now(), now(), #{late_interval}, #{late_fee}, #{fee}, #{id}, #{absent_fee}, #{status}, #{payed})
  	</insert> 
  	
  	<select id="getMaxNumForAttendence" resultType="Integer">
@@ -62,10 +62,25 @@
  		where id = #{id} and group_num = #{group_num}
  	</select>
  	
- 	<select id="getAllFee" parameterType="map" resultType="com.jung.domain.AttendenceBean">
+ 	<select id="getAllFee" resultType="com.jung.domain.AttendenceBean">
  		select * from attendence
  		where group_num = #{group_num}
  	</select>
+ 	
+ 	<select id="getFeeByNum" resultType="com.jung.domain.AttendenceBean">
+ 		select * from attendence
+ 		where num = #{num}
+ 	</select>
+ 	
+ 	<update id="payDone">
+		update attendence set payed = true
+		where num=#{num}
+	</update>
+	
+ 	<delete id="attendDel">
+		delete from attendence
+		where num=#{num}
+	</delete>
  	
  	<update id="updateMember" parameterType="map">
 		update team set member = #{member}
@@ -94,4 +109,16 @@
  			
  		</if>
  	</select>
+ 	
+ 	<update id="updateAttend">
+		update attendence set late_fee = #{late_fee}, fee = #{fee}, absent_fee = #{absent_fee}, payed = #{payed}, status = #{status}
+		where num=#{num}
+	</update>
+	
+	<update id="updateGroup">
+		update team set name=#{name}, start_time=#{start_time}, late_interval=#{late_interval}, late_fee=#{late_fee}, late_max=#{late_max}, 
+		late_maxFee=#{late_maxFee}, fee=#{fee}, absent_fee=#{absent_fee}, late_start=#{late_start}, week=#{week}, city=#{city},
+		goal=#{goal}, category=#{category}, hashTag=#{hashTag}, secret=#{secret}, rule=#{rule} 
+		where num=#{num}
+	</update>
  </mapper>

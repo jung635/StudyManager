@@ -14,19 +14,21 @@ function move(url){
 </script>
 <body>
 <c:import url="/member/header" />
-<div class="title"><h1>메시지</h1></div>
-<table border="1" class="table_center">
-	<th>아이디</th><th>내용</th><th>날짜</th>
-	<c:choose>
-		<c:when test="${alarmList eq null }">
-			내용이 없습니다.
-		</c:when>
-		<c:otherwise>
-			<c:forEach items="${alarmList }" var="ab">
-	 		<tr><td>${ab.id }</td><td onclick="move('${ab.move}')" style="cursor:pointer;">${ab.content }</td><td>${ab.date }</td></tr>
-			</c:forEach>
-		</c:otherwise>
-	</c:choose>
-</table>
+<div class="container">
+	<div class="title"><h1>메시지</h1></div>
+	<table class="table_center default_thTable">
+		<th>아이디</th><th>내용</th><th>날짜</th>
+		<c:choose>
+			<c:when test="${alarmList eq null }">
+				내용이 없습니다.
+			</c:when>
+			<c:otherwise>
+				<c:forEach items="${alarmList }" var="ab">
+		 		<tr><td>${ab.id }</td><td onclick="move('${ab.move}')" style="cursor:pointer;">${ab.content }</td><td>${ab.date }</td></tr>
+				</c:forEach>
+			</c:otherwise>
+		</c:choose>
+	</table>
+</div>
 </body>
 </html>

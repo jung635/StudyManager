@@ -19,10 +19,21 @@
  		order by date desc
  		limit #{start},#{pageSize}
  	</select>
+ 	<select id="getBoardListByGroup" parameterType="map" resultType="com.jung.domain.BoardBean">
+ 		select * from board
+ 		where group_num=#{group_num}
+ 		order by date desc
+ 		limit #{start},#{pageSize}
+ 	</select>
  	
  	<select id="getListCount" parameterType="map" resultType="Integer">
  		select count(*) from board 
  		where group_num=#{group_num} and board_name=#{board_name}
+ 	</select>
+ 	
+ 	<select id="getListCountByGroup" resultType="Integer">
+ 		select count(*) from board 
+ 		where group_num=#{group_num}
  	</select>
  	
  	<select id="getContent" resultType="com.jung.domain.BoardBean">

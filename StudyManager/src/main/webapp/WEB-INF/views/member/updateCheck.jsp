@@ -11,7 +11,7 @@
 <script type="text/javascript">
 alert('${mesg}');
 if('${url}' == 'notOk') history.back();
-else location.href = '<c:url value="/member/main"/>';
+else location.href = '<c:url value="/member/info"/>';
 </script>
 </body>
 </html>

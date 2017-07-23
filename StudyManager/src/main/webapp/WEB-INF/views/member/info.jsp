@@ -12,15 +12,18 @@
 </head>
 <body>
 <c:import url="/member/header" />
-	<div class="title"><h1>회원정보</h1></div>
-	<table border="1" class="table_center">
-		<tr><td>아이디</td><td>${mb.id}</td></tr>
-		<tr><td>비밀번호</td><td>${mb.pass }</td></tr>
-		<tr><td>이름</td><td>${mb.name }</td></tr>
-		<tr><td>가입날짜</td><td>${mb.reg_date }</td></tr>
-		<tr><td>나이</td><td>${mb.age }</td></tr>
-		<tr><td>성별</td><td>${mb.gender }</td></tr>
-		<tr><td>email</td><td>${mb.email}</td></tr>
-	</table>
+<div class="container">
+<c:import url="/member/member_nav" />
+	<div id="right_nav_content">
+		<h2>회원 정보</h2>
+		<table class="default_table">
+			<tr><td>아이디</td><td>${mb.id}</td></tr>
+			<tr><td>비밀번호</td><td>${mb.pass }</td></tr>
+			<tr><td>이름</td><td>${mb.name }</td></tr>
+			<tr><td>가입날짜</td><td>${mb.reg_date }</td></tr>
+			<tr><td>email</td><td>${mb.email}</td></tr>
+		</table>
+	</div>
+</div>
 </body>
 </html>

@@ -9,6 +9,8 @@ public class AttendenceBean {
 	private String id, status;
 	private Time attend_time;
 	private Date date;
+	private boolean payed;
+	
 	public int getNum() {
 		return num;
 	}
@@ -68,5 +70,11 @@ public class AttendenceBean {
 	}
 	public void setAbsent_fee(int absent_fee) {
 		this.absent_fee = absent_fee;
+	}
+	public boolean isPayed() {
+		return payed;
+	}
+	public void setPayed(boolean payed) {
+		this.payed = payed;
 	}
 }

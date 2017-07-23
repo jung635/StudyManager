@@ -7,6 +7,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -30,9 +31,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.jung.domain.AlarmBean;
+import com.jung.domain.BoardBean;
 import com.jung.domain.GroupBean;
 import com.jung.domain.MemberBean;
+import com.jung.domain.PageMaker;
 import com.jung.service.AlarmService;
+import com.jung.service.BoardService;
 import com.jung.service.CustomUserDetails;
 import com.jung.service.GroupService;
 import com.jung.service.MemberService;
@@ -56,9 +60,11 @@ public class MemberController {
 	@Inject
 	private AlarmService aservice;
 	
+	@Inject
+	private BoardService bservice;
+	
 	@RequestMapping(value="/insert", method=RequestMethod.GET)
 	public String insertGet() throws Exception{
-		logger.info("/member/insert get => /member/insertForm �̵�");
 		return "/member/insertForm";
 	}
 	
@@ -87,13 +93,11 @@ public class MemberController {
 	
 	@RequestMapping(value="/login", method={RequestMethod.GET,RequestMethod.POST})
 	public String loingGet() throws Exception{
-		logger.info("/member/login get => /member/loginForm �̵�");
 		return "/member/loginForm";
 	}
 	
 	@RequestMapping(value="/login_success", method={RequestMethod.GET,RequestMethod.POST})
 	public String loginPost(MemberBean mb, HttpSession session, HttpServletResponse response) throws Exception{
-		logger.info("login Post�̵�");
 		CustomUserDetails userDetails = (CustomUserDetails)SecurityContextHolder.getContext().getAuthentication().getDetails();
 		session.setAttribute("id", userDetails.getUsername());
 			
@@ -113,32 +117,39 @@ public class MemberController {
 			}
 			
 		}
-		
 		model.addAttribute("group_map", map);
 		return "/member/main";
 	}
 	@RequestMapping(value="/main", method=RequestMethod.GET)
 	public String mainGet2(HttpSession session, Model model) throws Exception{
 		String id = (String)session.getAttribute("id");
-		Map<Integer, GroupBean> map = new HashMap<Integer, GroupBean>();
+		Map<Integer, GroupBean> group_map = new HashMap<Integer, GroupBean>();
 		model.addAttribute("id", id);
 		if(id != null){
 			if(service.getInfo(id).getTeam() != null){
 				String[] group_num = service.getInfo(id).getTeam().split(",");
 				for(int i=0; i<group_num.length; i++){
-					map.put(Integer.parseInt(group_num[i]), gservice.getGroupDetail(Integer.parseInt(group_num[i])));
+					group_map.put(Integer.parseInt(group_num[i]), gservice.getGroupDetail(Integer.parseInt(group_num[i])));
 				}
 			}
 		}
 		
-		
-		model.addAttribute("group_map", map);
+		model.addAttribute("group_map", group_map);
 		return "/member/main2";
 	}
 	
 	@RequestMapping(value="/header", method={ RequestMethod.GET, RequestMethod.POST })
-	public String manage_navGet() throws Exception{
+	public String headerGet() throws Exception{
 		return "/member/header";
+	}
+	@RequestMapping(value="/member_nav", method={ RequestMethod.GET, RequestMethod.POST })
+	public String member_navGet() throws Exception{
+		return "/member/member_nav";
+	}
+	
+	@RequestMapping(value="/bottom", method={ RequestMethod.GET, RequestMethod.POST })
+	public String bottomGet() throws Exception{
+		return "/member/bottom";
 	}
 	
 	@RequestMapping(value="/info", method=RequestMethod.GET)
@@ -154,9 +165,6 @@ public class MemberController {
 	public String updateGet(HttpSession session, Model model) throws Exception{
 		String id = (String)session.getAttribute("id");
 		MemberBean mb = service.getInfo(id);
-		if(mb.getGender() == null){
-			mb.setGender("��");
-		}
 		
 		model.addAttribute("mb", mb);
 		return "/member/updateForm";
@@ -172,10 +180,10 @@ public class MemberController {
 		if(isMatch){
 			service.updateMember(mb);
 			url = "ok";
-			mesg = "������Ʈ�� �����Ͽ����ϴ�";
+			mesg = "업데이트 되었습니다.";
 		}else{
 			url = "notOk";
-			mesg = "��й�ȣ�� �ٽ��ѹ� Ȯ�����ּ���.";
+			mesg = "비밀번호를 확인해주세요.";
 		}
 		
 		model.addAttribute("url", url);
@@ -204,10 +212,10 @@ public class MemberController {
 			}
 			service.deleteMember(id);
 			url = "ok";
-			mesg = "���������� ȸ��Ż�� �Ǿ����ϴ�.";
+			mesg = "탈퇴되었습니다.";
 		}else{
 			url = "notOk";
-			mesg = "��й�ȣ�� Ȯ�����ּ���.";
+			mesg = "비밀번호를 확인해주세요.";
 		}
 		
 		model.addAttribute("url", url);
@@ -285,5 +293,28 @@ public class MemberController {
 		out.flush();
 		out.close();
 		
+	}
+	
+	@RequestMapping(value="/myGroup", method=RequestMethod.GET)
+	public String myGroupList(HttpSession session, Model model) throws Exception{
+		String id = (String)session.getAttribute("id");
+		Map<Integer, GroupBean> group_map = new HashMap<Integer, GroupBean>();
+		model.addAttribute("id", id);
+		if(id != null){
+			if(service.getInfo(id).getTeam() != null){
+				String[] group_num = service.getInfo(id).getTeam().split(",");
+				for(int i=0; i<group_num.length; i++){
+					group_map.put(Integer.parseInt(group_num[i]), gservice.getGroupDetail(Integer.parseInt(group_num[i])));
+				}
+			}
+		}
+		
+		model.addAttribute("group_map", group_map);
+		return "/member/myGroup";
+	}
+	
+	@RequestMapping(value="/groupSearch", method=RequestMethod.GET)
+	public String groupSearchGet() throws Exception{
+		return "/member/groupSearch";
 	}
 }

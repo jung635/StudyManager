@@ -1,0 +1,257 @@
+@CHARSET "UTF-8";
+.bg-4 { 
+    background-color: #2f2f2f; /* Black Gray */
+    color: #fff;
+    margin-top: 50px;
+}
+.container-fluid {
+    padding-top: 70px;
+    padding-bottom: 70px;
+}
+.default_table{
+	border-collapse: collapse;
+    width: 80%;
+}
+
+.default_table td {
+    padding: 8px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.default_topbotTable{
+	border-collapse: collapse;
+    width: 80%;
+}
+
+.default_topbotTable td {
+    padding: 8px;
+    text-align: left;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+
+.default_thTable {
+    border-collapse: collapse;
+    width: 80%;
+}
+
+.default_thTable td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+
+.default_thTable th {
+	padding: 8px;
+    text-align: center;
+    background-color: #b5b4b4;
+    color: white;
+}
+.group_ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: rgba(234, 132, 5, 0.92);
+}
+
+.group_ul li {
+    float: left;
+}
+
+.group_ul li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.group_ul li a:hover {
+    background-color: rgba(234, 79, 5, 0.92);
+}
+
+#group_name{
+	float:right;
+	background-color: #f5c53f;
+}
+
+#group_name a{
+	color: #993333;
+}
+.table_center{
+	margin: auto;
+}
+ 
+.navbar {
+     padding-top: 15px;
+     padding-bottom: 15px;
+     border: 0;
+     border-radius: 0;
+     margin-bottom: 0;
+     font-size: 12px;
+     letter-spacing: 5px;
+}
+ .navbar-nav  li a:hover {
+     color: #1abc9c !important;
+ }
+ 
+ .clear{
+	clear: both;
+ }
+ 
+ .center{
+	margin: auto;
+ }
+ 
+ .text_center{
+ 	text-align: center;
+ }
+ 
+ .title{
+ 	text-align: center;
+ 	padding-bottom: 20px;
+ 	padding-top: 10px;
+ }
+  
+  #attend_check{
+	margin: auto;
+	width: 300px;
+	padding-bottom: 47px;
+   }
+  
+  /* dropDown */
+  .dropbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px 12px 16px 12px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+    background-color: #3e8e41;
+}
+
+#right_nav_content{
+    margin-left: 22%;
+    margin-top: 32px;
+    padding; 30px;
+}
+
+.manage_nav{
+    list-style-type: none;
+    margin-top: 2%;
+    padding: 0;
+    width: 150px;
+    background-color: #ddd;
+    position: fixed;
+    height: 146px;
+    overflow: auto;
+	text-align: center
+}
+
+.manage_nav_li a {
+    display: block;
+    color: #000;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+.manage_nav_li a.active {
+    background-color: #588fde;
+    color: white;
+}
+
+.manage_nav_li a:hover:not(.active) {
+    background-color: #555;
+    color: white;
+}
+
+.manage_nav_li{
+	float: none;
+}
+
+#addMember{
+	margin-top: 50px;
+}
+
+.search_box{
+	width: 80%;
+    margin: auto;
+    padding: 30px;
+    background-color: #94d0fb;	
+}
+
+#add_member_search_table{
+	border-collapse: collapse;
+    width: 45%;
+}
+
+#add_member_search_table td {
+    padding: 3px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.group_make_content{
+    padding-top: 13px;
+    padding-bottom: 13px;
+}
+
+#rule_warn{
+	padding-top: 15px;
+}
+
+#hashTag_view, #category_view{
+	margin-left: 20px;
+}
+
+.choose_box{
+    float: left;
+    padding: 2px 5px 2px 5px;
+    background-color: #cdeaf9;
+    border-radius: 10px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+.pointer{
+	cursor:pointer;
+}
+
+#group_make_container{
+	margin-left: 20%;
+}

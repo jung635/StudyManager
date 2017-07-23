@@ -21,7 +21,7 @@
 	</logger>
 	
 	<!-- Query Loggers -->
-<!--     <logger name="jdbc.sqlonly" additivity="false"> 
+<!--      <logger name="jdbc.sqlonly" additivity="false"> 
         <level value="INFO"/> 
         <appender-ref ref="console-infolog"/> 
     </logger> -->

@@ -49,12 +49,8 @@ public class GroupController {
 	
 	@RequestMapping(value="/make", method=RequestMethod.POST)
 	public String makePost(GroupBean gb, HttpSession session) throws Exception{
-		System.out.println("week: "+gb.getWeek());
-		System.out.println("city: "+gb.getCity());
-		System.out.println("goal: "+gb.getGoal());
-		System.out.println("cat: "+gb.getCategory());
-		System.out.println("hash: "+gb.getHashTag());
-		System.out.println("secret: "+gb.isSecret());
+		if(gb.getGoal().equals("선택하세요")) gb.setGoal(null);
+		if(gb.getCity().equals("선택하세요")) gb.setCity(null);
 		gb.setNum(service.getMaxNum()+1);
 		String id = (String)session.getAttribute("id");
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -106,7 +102,6 @@ public class GroupController {
 		int group_num = (Integer)session.getAttribute("group_num");
 		GroupBean gb = service.getGroupDetail(group_num);
 		Date now = Calendar.getInstance().getTime();
-		//LinkedHashMap<Map<MemberBean, AttendenceBean>, GroupBean> group_map = service.getGroupMemberList(group_num, now);
 		LinkedHashMap<MemberBean, AttendenceBean> group_map = service.getGroupMemberList(group_num, now);
 		model.addAttribute("gb", gb);
 		model.addAttribute("group_map", group_map);
@@ -157,13 +152,16 @@ public class GroupController {
 				System.out.println("max interval: "+max_interval);
 				ab.setLate_interval((int)late_interval);
 				if(late_interval<0){
+					ab.setPayed(true);
 					ab.setLate_interval(0);//as interval 입력
 					ab.setLate_fee(0);//as late fee입력
 				}else if(late_interval>max_interval){
+					ab.setPayed(false);
 					ab.setStatus("late");
 					ab.setLate_interval((int)late_interval);//as interval 입력
 					ab.setLate_fee(gb_form.getLate_maxFee());//as late fee입력
 				}else if(late_interval<=max_interval){
+					ab.setPayed(false);
 					ab.setStatus("late");
 					ab.setLate_interval((int)late_interval);//as interval 입력
 					System.out.println((int)((Math.ceil((double)late_interval/(double)gb_form.getLate_interval())))*gb_form.getLate_fee());
@@ -174,6 +172,7 @@ public class GroupController {
 				ab.setDate(now.getTime());//as 오늘자 날짜 입력
 				ab.setLate_interval(-1);//as interval 입력
 				ab.setAbsent_fee(gb_form.getAbsent_fee());//as late fee입력
+				ab.setPayed(false);
 			}
 			
 			service.insertAttendence(ab);
@@ -268,36 +267,41 @@ public class GroupController {
 		PrintWriter out = resp.getWriter();
 		int group_num = (Integer)session.getAttribute("group_num");
 		GroupBean gb = service.getGroupDetail(group_num);
-		String[] member_arr = gb.getMember().split(",");
-		String member = "";
-		for(int i=0; i<member_arr.length; i++){
-			String member_str = member_arr[i].split("/")[0];
-			if(!member_str.equals(member_id)) {
-				member += member_arr[i] + ",";
+		if(member_id.equals(gb.getAdmin())){
+			out.println("<script>");
+			out.println("alert('운영자는 탈퇴시킬 수 없습니다.');");
+			out.println("location.href='manageMember';");
+			out.println("</script>");
+		}else{
+			String[] member_arr = gb.getMember().split(",");
+			String member = "";
+			for(int i=0; i<member_arr.length; i++){
+				String member_str = member_arr[i].split("/")[0];
+				if(!member_str.equals(member_id)) {
+					member += member_arr[i] + ",";
+				}
 			}
-		}
-		System.out.println(member.substring(0, member.length()-1));
-		service.updateMember(member.substring(0, member.length()-1), group_num);
-		
-		MemberBean mb = mservice.getInfo(member_id);
-		String[] group_num_arr = mb.getTeam().split(",");
-		String group = "";
-		for(int i=0; i<group_num_arr.length; i++){
-			int member_group_num = Integer.parseInt(group_num_arr[i]);
-			if(member_group_num != group_num){
-				group += member_group_num + ",";
+			service.updateMember(member.substring(0, member.length()-1), group_num);
+			
+			MemberBean mb = mservice.getInfo(member_id);
+			String[] group_num_arr = mb.getTeam().split(",");
+			String group = "";
+			for(int i=0; i<group_num_arr.length; i++){
+				int member_group_num = Integer.parseInt(group_num_arr[i]);
+				if(member_group_num != group_num){
+					group += member_group_num + ",";
+				}
 			}
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("id", member_id);
+			map.put("group", group.substring(0, group.length()-1));
+			mservice.updateGroup(map);
+			
+			out.println("<script>");
+			out.println("alert('탈퇴 되었습니다.');");
+			out.println("location.href='/web/group/manageMember';");
+			out.println("</script>");
 		}
-		System.out.println(group.substring(0, group.length()-1));
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("id", member_id);
-		map.put("group", group.substring(0, group.length()-1));
-		mservice.updateGroup(map);
-		
-		out.println("<script>");
-		out.println("alert('탈퇴 되었습니다.');");
-		out.println("location.href='manageMember';");
-		out.println("</script>");
 		out.flush();
 		out.close();
 	}
@@ -312,8 +316,8 @@ public class GroupController {
 	}
 	
 	@RequestMapping(value="/invite", method=RequestMethod.GET)
-	public void  inviteGet(@RequestParam("invite_id") String invite_id,
-			Model model, HttpSession session, HttpServletResponse resp) throws Exception{
+	public void  inviteGet(@RequestParam("invite_id") String invite_id, HttpSession session, HttpServletResponse resp) 
+			throws Exception{
 		resp.setContentType("text/html; charset=utf-8");
 		PrintWriter out = resp.getWriter();
 		int group_num = (Integer)session.getAttribute("group_num");
@@ -359,28 +363,59 @@ public class GroupController {
 		model.addAttribute("gb", gb);
 		return "/group/board_manage";
 	}
+	
 	@RequestMapping(value="/manageFee", method=RequestMethod.GET)
 	public String  manageFeeGet(Model model, HttpSession session) throws Exception{
 		int group_num = (Integer)session.getAttribute("group_num");
-		GroupBean gb = service.getGroupDetail(group_num);
-		String[] board_arr = gb.getBoard().split(",");
-		model.addAttribute("board", board_arr);
-		model.addAttribute("length", board_arr.length);
-		model.addAttribute("gb", gb);
+		List<AttendenceBean> ab_all_list = service.getAllFee(group_num);
+		Iterator<AttendenceBean> ab_all_iterator = ab_all_list.iterator();
+		Map<String, Long> fee_map = new HashMap<String, Long>();
+		Map<String, AttendenceBean> attend_map = new HashMap<String, AttendenceBean>();
+		long all_fee_group = 0;
+		long all_fee_group_payed = 0;
+		while(ab_all_iterator.hasNext()){
+			AttendenceBean ab = ab_all_iterator.next();
+			long fee_tmp = (long)(ab.getAbsent_fee() + ab.getFee() + ab.getLate_fee());
+			if(fee_tmp>0){
+				attend_map.put(new Integer(ab.getNum()).toString(), ab);
+			}
+			if(ab.isPayed()){
+				all_fee_group_payed += fee_tmp;
+			}
+			if(fee_map.get(ab.getId()) != null)
+				fee_map.put(ab.getId(), fee_map.get(ab.getId())+fee_tmp);
+			else
+				fee_map.put(ab.getId(), fee_tmp);
+			all_fee_group += ab.getAbsent_fee() + ab.getFee() + ab.getLate_fee();
+		}
+		String data = "";
+		if(fee_map.size() != 0){
+			data = "[";
+			Iterator<String> fee_map_Iterator = fee_map.keySet().iterator();
+			while(fee_map_Iterator.hasNext()){
+				String key = fee_map_Iterator.next();
+				data += "['"+key+"',"+fee_map.get(key)+"], ";
+			}
+			data = data.substring(0,data.length()-2)+ "]";
+		}
+		
+		
+		model.addAttribute("all_fee_group_payed", all_fee_group_payed);
+		model.addAttribute("all_fee_group", all_fee_group);
+		model.addAttribute("fee_map", fee_map);
+		model.addAttribute("attend_map", attend_map);
+		model.addAttribute("data", data);
 		return "/group/fee_manage";
 	}
 	@RequestMapping(value="/manageGroup", method=RequestMethod.GET)
 	public String  manageGroupGet(Model model, HttpSession session) throws Exception{
 		int group_num = (Integer)session.getAttribute("group_num");
 		GroupBean gb = service.getGroupDetail(group_num);
-		String[] board_arr = gb.getBoard().split(",");
-		model.addAttribute("board", board_arr);
-		model.addAttribute("length", board_arr.length);
 		model.addAttribute("gb", gb);
 		return "/group/group_manage";
 	}
 	
-	@RequestMapping(value="/search", method=RequestMethod.POST)
+	@RequestMapping(value="/search", method={RequestMethod.POST,RequestMethod.GET})
 	public String searchPost(GroupBean gb, HttpSession session,
 			@RequestParam("search_input") String search_input, Model model) throws Exception{
 		Map<String, Object> search_map = new HashMap<String, Object>();
@@ -403,7 +438,76 @@ public class GroupController {
 			System.out.println(iterator.next().getName());
 		}
 		
+		model.addAttribute("gb", gb);
+		model.addAttribute("search_input", search_input);
 		model.addAttribute("list", list);
 		return "/group/groupSearchList";
 	}
+	
+	@RequestMapping(value="/payDone", method=RequestMethod.GET)
+	public void payDonePost(GroupBean gb, HttpSession session,
+			@RequestParam("attend_num") int attend_num, HttpServletResponse resp) throws Exception{
+		
+		service.payDone(attend_num);
+		resp.setContentType("text/html; charset=utf-8");
+		PrintWriter out = resp.getWriter();
+		out.println("<script>");
+		out.println("alert('지불 완료되었습니다.');");
+		out.println("history.back()");
+		out.println("</script>");
+		out.flush();
+		out.close();
+	}
+	
+	@RequestMapping(value="/attendDel", method=RequestMethod.GET)
+	public void attendDelPost(GroupBean gb, HttpSession session,
+			@RequestParam("attend_num") int attend_num, HttpServletResponse resp) throws Exception{
+		service.attendDel(attend_num);
+		resp.setContentType("text/html; charset=utf-8");
+		PrintWriter out = resp.getWriter();
+		out.println("<script>");
+		out.println("alert('삭제가 완료되었습니다.');");
+		out.println("history.back()");
+		out.println("</script>");
+		out.flush();
+		out.close();
+	}
+	
+	
+	@RequestMapping(value="/attendUpdate", method=RequestMethod.GET)
+	public String attendUpdateGet(Model model, @RequestParam("attend_num") int attend_num) throws Exception{
+		model.addAttribute("ab", service.getFeeByNum(attend_num));
+		return "/group/attendDetail";
+	}
+	
+	@RequestMapping(value="/attendUpdate", method=RequestMethod.POST)
+	public void attendUpdatePost(Model model, AttendenceBean ab, HttpServletResponse resp,
+			@RequestParam("pay_fee") int pay_fee) throws Exception{
+		System.out.println(ab.getStatus());
+		if(ab.getStatus().equals("absent")){
+			ab.setAbsent_fee(pay_fee);
+		}else if(ab.getStatus().equals("late")){
+			ab.setLate_fee(pay_fee);
+		}else if(ab.getStatus().equals("fee")){
+			ab.setFee(pay_fee);
+		}
+		service.updateAttend(ab);
+		resp.setContentType("text/html; charset=utf-8");
+		PrintWriter out = resp.getWriter();
+		out.println("<script>");
+		out.println("alert('업데이트가가 완료되었습니다.');");
+		out.println("location.href='/web/group/manageFee';");
+		out.println("</script>");
+		out.flush();
+		out.close();
+	}
+	
+	@RequestMapping(value="/update", method=RequestMethod.POST)
+	public String updatePost(GroupBean gb, HttpSession session) throws Exception{
+		if(gb.getGoal().equals("선택하세요")) gb.setGoal(null);
+		if(gb.getCity().equals("선택하세요")) gb.setCity(null);
+		service.updateGroup(gb);
+		return "redirect:/group/manageGroup";
+	}
+	
 }

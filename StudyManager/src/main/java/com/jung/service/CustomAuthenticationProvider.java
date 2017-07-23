@@ -48,7 +48,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 		if(isLogin){
 			result.setDetails(new CustomUserDetails(user_id, user_pass));
 		}else{
-			throw new UsernameNotFoundException("¾ÆÀÌµğ³ª ºñ¹Ğ¹øÈ£¸¦ ´Ù½Ã È®ÀÎÇØÁÖ¼¼¿ä");
+			throw new UsernameNotFoundException("ì•„ì´ë””ë‚˜ ë¹„ë°€ë²ˆí˜¸ë¥¼ ë‹¤ì‹œ í™•ì¸í•´ì£¼ì„¸ìš”.");
 		}
 		
 		

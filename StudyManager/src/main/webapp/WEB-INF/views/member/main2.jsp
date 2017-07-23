@@ -6,44 +6,9 @@
 <head>
   <!-- Theme Made By www.w3schools.com - No Copyright -->
   <title>Study Manager</title>
+	<link href="<c:url value='/resources/css/main.css'/>" rel="stylesheet">
   <meta charset="utf-8">
 </head>
-<style>
-  body {
-      font: 20px Montserrat, sans-serif;
-      line-height: 1.8;
-  }
-  p {font-size: 16px;}
-  .margin {margin-bottom: 45px;}
-  .bg-1 { 
-      background-color: #1abc9c; /* Green */
-      color: #ffffff;
-      float: left;
-  }
-  .bg-2 { 
-      background-color: #474e5d; /* Dark Blue */
-      color: #ffffff;
-      float: right;
-  }
-  .bg-3 { 
-      background-color: #ffffff; /* White */
-      color: #555555;
-  }
-  .bg-4 { 
-      background-color: #2f2f2f; /* Black Gray */
-      color: #fff;
-  }
-  .container-fluid {
-      padding-top: 70px;
-      padding-bottom: 70px;
-  }
-  .container-fluid_first {
-      padding-top: 70px;
-      padding-bottom: 70px;
-      width: 50%;
-      height: 350px;
-  }
-</style>
 <body>
 <!-- Navbar -->
 <c:import url="/member/header" />
@@ -62,65 +27,64 @@
 	<h3 class="margin">What are you looking for?</h3>
   지역: <select style="color:black" name="city">
 		<option value="">선택하세요</option>	
-		<option value="seoul">서울</option>	
-		<option value="busan">부산광역시</option>	
-		<option value="incheon">인천광역시</option>	
-		<option value="gyeonggi">경기도</option>	
-		<option value="daegu">대구광역시</option>	
-		<option value="daejeon">대전광역시</option>	
-		<option value="gwangju">광주광역시</option>	
-		<option value="ulsan">울산광역시</option>	
-		<option value="gangwon">강원도</option>	
-		<option value="gyeongNam">경상남도</option>	
-		<option value="gyeongBuk">경상북도</option>	
-		<option value="jeoNam">전라남도</option>	
-		<option value="jeoBuk">전라북도</option>	
-		<option value="chungNam">충청남도</option>	
-		<option value="chungBuk">충청북도</option>	
-		<option value="Jeju">제주도</option>	
+		<option value="서울">서울</option>	
+		<option value="부산광역시">부산광역시</option>	
+		<option value="인천광역시">인천광역시</option>	
+		<option value="경기도">경기도</option>	
+		<option value="대구광역시">대구광역시</option>	
+		<option value="대전광역시">대전광역시</option>	
+		<option value="광주광역시">광주광역시</option>	
+		<option value="울산광역시">울산광역시</option>	
+		<option value="강원도">강원도</option>	
+		<option value="경상남도">경상남도</option>	
+		<option value="경상북도">경상북도</option>	
+		<option value="전라남도">전라남도</option>	
+		<option value="전라북도">전라북도</option>	
+		<option value="충청남도">충청남도</option>	
+		<option value="충청북도">충청북도</option>	
+		<option value="제주도">제주도</option>	
 	</select>
 	요일: 
-		<input type="checkbox" name="week" value="mon">월
-		<input type="checkbox" name="week" value="tue">화
-		<input type="checkbox" name="week" value="wed">수
-		<input type="checkbox" name="week" value="thu">목
-		<input type="checkbox" name="week" value="fri">금
-		<input type="checkbox" name="week" value="sat">토
-		<input type="checkbox" name="week" value="sun">일
-		<br>
+		월<input type="checkbox" name="week" value="월">
+		화<input type="checkbox" name="week" value="화">
+		수<input type="checkbox" name="week" value="수">
+		목<input type="checkbox" name="week" value="목">
+		금<input type="checkbox" name="week" value="금">
+		토<input type="checkbox" name="week" value="토">
+		일<input type="checkbox" name="week" value="일"><br>
 	목적: 
 		<select name="goal" style="color:black">
 			<option value="">선택하세요</option>
-			<option value="job">취업</option>	
-			<option value="hobby">취미</option>	
-			<option value="exam">시험</option>	
-			<option value="study">학습</option>	
-			<option value="etc">기타</option>	
+			<option value="취업">취업</option>	
+			<option value="취미">취미</option>	
+			<option value="시험">시험</option>	
+			<option value="학습">학습</option>	
+			<option value="기타">기타</option>	
 		</select>	
 		카테고리:
 		<select name="category" style="color:black">
 			<option value="">선택하세요</option>	
-			<option value="it">IT</option>	
-			<option value="interview">면접</option>	
-			<option value="high_scool">수능</option>	
-			<option value="toeic">토익</option>	
-			<option value="toss">토스</option>	
-			<option value="opic">오픽</option>	
-			<option value="japan">일본어</option>	
-			<option value="china">중국어</option>	
+			<option value="IT">IT</option>	
+			<option value="면접">면접</option>	
+			<option value="수능">수능</option>	
+			<option value="토익">토익</option>	
+			<option value="토스">토스</option>	
+			<option value="오픽">오픽</option>	
+			<option value="일본어">일본어</option>	
+			<option value="중국어">중국어</option>	
 			<option value="jpt">jpt</option>	
 			<option value="jlpt">jlpt</option>	
 			<option value="hsk">hsk</option>	
-			<option value="goverment">공무원</option>	
-			<option value="design">디자인</option>	
-			<option value="english">영어</option>	
-			<option value="nsc">NCS</option>	
-			<option value="economy">경제</option>	
-			<option value="big_company">대기업적성검사</option>	
-			<option value="goverment_company">공기업준비</option>	
-			<option value="laguage">어학</option>	
-			<option value="exam">자격증</option>	
-			<option value="etc">기타</option>	
+			<option value="공무원">공무원</option>	
+			<option value="디자인">디자인</option>	
+			<option value="영어">영어</option>	
+			<option value="NCS">NCS</option>	
+			<option value="경제">경제</option>	
+			<option value="대기업적성검사">대기업적성검사</option>	
+			<option value="공기업준비">공기업준비</option>	
+			<option value="어학">어학</option>	
+			<option value="자격증">자격증</option>	
+			<option value="기타">기타</option>	
 		</select>
 		<br>
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
@@ -133,26 +97,34 @@
 <!-- Third Container (Grid) -->
 <div class="container-fluid bg-3 text-center clear">    
   <h3 class="margin">My Groups</h3><br>
+
   <div class="row">
-  	<c:forEach items="${group_map }" var="key" >
-	    <div class="col-sm-4">
-	    	<h3>
-	    		<a href="<c:url value="/group/main?group_num=${key.value.num }"/>">${key.value.name }</a>
-	    		<c:if test="${key.value.admin eq id }"> >>관리자</c:if>
-	    	</h3>
-	      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-	       <a href="#" class="btn btn-default btn-lg">
-				Go <span class="glyphicon glyphicon-hand-right"></span>
-	       </a>
-	    </div>
-    </c:forEach>
+	<div class="container">
+		<table  class="table_center default_thTable" style="width: 100%">
+		<th>그룹 이름</th><th>만나는 요일</th><th>만나는 시간</th><th>도시</th><th>목적</th><th>카테고리</th><th>해시태그</th>
+		<c:forEach items="${group_map }" var="key" >
+			<tr>
+				<td><a href="<c:url value="/group/main?group_num=${key.value.num }"/>">${key.value.name }</a>
+					<c:if test="${key.value.admin eq id }"><b> (관리자입니다)</b></c:if>
+					<a href="<c:url value="/group/main?group_num=${key.value.num }"/>" class="btn btn-default btn-lg" style="padding: 3px; font-size: 15px; margin-left: 20px;">
+						Go <span class="glyphicon glyphicon-hand-right"></span>
+	       			</a>
+	       		</td>
+				<td>${key.value.week }</td>
+				<td>${key.value.start_time }</td>
+				<td>${key.value.city }</td>
+				<td>${key.value.goal }</td>
+				<td>${key.value.category }</td>
+				<td>${key.value.hashTag }</td>
+			</tr>
+		</c:forEach>
+		</table>
+	</div>
   </div>
 </div>
 
 <!-- Footer -->
-<footer class="container-fluid bg-4 text-center">
-  <p>Bootstrap Theme Made By <a href="https://www.w3schools.com">www.w3schools.com</a></p> 
-</footer>
+<c:import url="/member/bottom" />
 
 </body>
 </html>

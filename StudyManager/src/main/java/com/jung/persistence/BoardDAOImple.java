@@ -37,8 +37,6 @@ public class BoardDAOImple implements BoardDAO{
 	
 	@Override
 	public int getListCount(Map<String, Object> count_map) throws Exception {
-		System.out.println(count_map.get("board_name"));
-		System.out.println(count_map.get("group_num"));
 		return sqlSession.selectOne(namespace+".getListCount", count_map);
 	}
 
@@ -63,5 +61,17 @@ public class BoardDAOImple implements BoardDAO{
 		sqlSession.delete(namespace+".deleteBoard", num);
 		
 	}
+
+	@Override
+	public List<BoardBean> getBoardListByGroup(Map<String, Object> pageMap) throws Exception {
+		return sqlSession.selectList(namespace+".getBoardListByGroup", pageMap);
+	}
+
+	@Override
+	public int getListCountByGroup(int group_num) throws Exception {
+		return sqlSession.selectOne(namespace+".getListCountByGroup", group_num);
+	}
+	
+	
 	
 }

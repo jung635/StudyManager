@@ -22,7 +22,12 @@ public interface GroupDAO {
 	public AttendenceBean getAttendenceListByDateGroup(Map<String, Object> map) throws Exception;
 	public List<AttendenceBean> getAllFeeById(Map<String, Object> map) throws Exception;
 	public List<AttendenceBean> getAllFee(int group_num) throws Exception;
+	public AttendenceBean getFeeByNum(int num) throws Exception;
 	public void updateMember(Map<String, Object> map) throws Exception;
 	public List<GroupBean> groupSearch(Map<String, Object> map) throws Exception;
+	public void payDone(int attend_num) throws Exception;
+	public void attendDel(int attend_num) throws Exception;
+	public void updateAttend(AttendenceBean ab) throws Exception;
+	public void updateGroup(GroupBean gb) throws Exception;
 
 }

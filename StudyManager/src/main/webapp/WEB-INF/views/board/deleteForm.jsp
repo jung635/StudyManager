@@ -8,6 +8,8 @@
 <title>Insert title here</title>
 </head>
 <body>
+<c:import url="/member/header" />
+<c:import url="/group/header" />
 <form action="<c:url value="/board/delete"/>" method="post" name="fr">
 아이디:<input type="text" name="id" value="${id }" readonly><br>
 비밀번호 :<input type="password" name="pass"><br>

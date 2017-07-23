@@ -8,14 +8,21 @@
 <title>Insert title here</title>
 </head>
 <body>
-<table>
-<tr><td>이름</td><td>${bb.name }</td></tr>
-<tr><td>제목</td><td>${bb.subject }</td></tr>
-<tr><td>내용</td><td>${bb.content }</td></tr>
-<tr><td>첨부파일</td><td><a href="<c:url value='/board/fileDownload?file=${bb.file }&fileName=${bb.fileName }'/>">${bb.fileName }</a></td></tr>
-</table>
-<input type="button" value="수정하기" onclick="location.href='<c:url value="/board/update?num=${bb.num }&pageNum=${pageNum }"/>'">
-<input type="button" value="삭제하기" onclick="location.href='<c:url value="/board/delete?num=${bb.num }"/>'">
-<input type="button" value="목록돌아가기" onclick="location.href='<c:url value="/board/list?pageNum=${pageNum }&board_name=${bb.board_name }"/>'">
+<c:import url="/member/header" />
+<c:import url="/group/header" />
+<div class="container">
+	<div class="title"><h1>글내용</h1></div>
+	<table class="table_center default_table">
+		<tr><td>이름</td><td>${bb.name }</td></tr>
+		<tr><td>제목</td><td>${bb.subject }</td></tr>
+		<tr><td>내용</td><td>${bb.content }</td></tr>
+		<tr><td>첨부파일</td><td><a href="<c:url value='/board/fileDownload?file=${bb.file }&fileName=${bb.fileName }'/>">${bb.fileName }</a></td></tr>
+	</table>
+	<div class="text_center" style="margin-top: 20px">
+		<input type="button" value="수정하기" onclick="location.href='<c:url value="/board/update?num=${bb.num }&pageNum=${pageNum }"/>'">
+		<input type="button" value="삭제하기" onclick="location.href='<c:url value="/board/delete?num=${bb.num }"/>'">
+		<input type="button" value="목록돌아가기" onclick="location.href='<c:url value="/board/list?pageNum=${pageNum }&board_name=${bb.board_name }"/>'">
+	</div>
+</div>
 </body>
 </html>

@@ -6,8 +6,8 @@
  <mapper namespace="com.jung.mapper.MemberMapper">
  
  	<insert id="insertMember">
- 		insert into member (id, pass, email, name, reg_date, age, gender) 
- 		values(#{id}, #{pass}, #{email}, #{name}, #{reg_date}, #{age}, #{gender})
+ 		insert into member (id, pass, email, name, reg_date) 
+ 		values(#{id}, #{pass}, #{email}, #{name}, now())
  	</insert>
  	
 	<select id="getPass" resultType="String">
@@ -21,7 +21,7 @@
 	</select>
 	
 	<update id="updateMember">
-		update member set name=#{name}, email=#{email}, age=#{age}, gender=#{gender}
+		update member set name=#{name}, email=#{email}
 		where id=#{id}
 	</update>
 	

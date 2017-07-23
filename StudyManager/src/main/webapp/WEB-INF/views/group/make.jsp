@@ -103,7 +103,7 @@ function hashTagInput(event){
 			}else{
 				tag_count ++;
 				if(hashTag_input.startsWith("#")) hashTag_input = hashTag_input.substring(1, hashTag_input.length);
-				document.getElementById("hashTag_view").innerHTML += "<div id='hashTag_"+tag_count+"'style='float:left'><span class='hashTag_value_part'>"+hashTag_input+"</span><span class='glyphicon glyphicon-remove' onclick='tagDelete("+tag_count+")'></span></div>"
+				document.getElementById("hashTag_view").innerHTML += "<div class='choose_box' id='hashTag_"+tag_count+"'><span class='hashTag_value_part'>"+hashTag_input+"</span><span class='glyphicon glyphicon-remove pointer' onclick='tagDelete("+tag_count+")'></span></div>"
 				document.getElementById("hashTag_input").value = "";
 			}
 		}
@@ -117,7 +117,6 @@ function tagDelete(count){
 }
 
 category_count = 0;
-category_block_tmp = 0;
 function categoryInput(){
 	category_input = document.getElementById("category_input").value;
 	category_index = document.getElementById("category_input").selectedIndex;
@@ -126,18 +125,13 @@ function categoryInput(){
 	}else{
 		if(category_index>0){
 			if(category_count>0){
-				prev_catogory = document.getElementById("category_value_"+(category_block_tmp-1).toString()).innerHTML;
-				//+(category_count-1).toString()
-				//alert(prev_catogory);
-				if(category_input!=prev_catogory){
-					document.getElementById("category_view").innerHTML += "<div id='category_"+category_count+"'style='float:left'><span class='category_value_part' id='category_value_"+category_block_tmp+"'>"+category_input+"</span><span class='glyphicon glyphicon-remove' onclick='categoryDelete("+category_count+")'></span></div>";
-					category_block_tmp ++;
-					category_count ++;
-				}
-			}else{
-				document.getElementById("category_view").innerHTML += "<div id='category_"+category_count+"'style='float:left'><span class='category_value_part' id='category_value_"+category_count+"'>"+category_input+"</span><span class='glyphicon glyphicon-remove' onclick='categoryDelete("+category_count+")'></span></div>";
-				category_block_tmp ++;
+				document.getElementById("category_view").innerHTML += "<div class='choose_box' id='category_"+category_count+"'><span class='category_value_part'>"+category_input+"</span><span class='glyphicon glyphicon-remove pointer' onclick='categoryDelete("+category_count+")'></span></div>";
 				category_count ++;
+				document.getElementById("category_input").value = "선택하세요";
+			}else{
+				document.getElementById("category_view").innerHTML += "<div class='choose_box' id='category_"+category_count+"'><span class='category_value_part'>"+category_input+"</span><span class='glyphicon glyphicon-remove pointer' onclick='categoryDelete("+category_count+")'></span></div>";
+				category_count ++;
+				document.getElementById("category_input").value = "선택하세요";
 			}
 		}
 	}
@@ -154,115 +148,166 @@ function categoryDelete(count){
 <body>
 <c:import url="/member/header" />
 <div class="title"><h1>그룹 만들기</h1></div>
-<div style="margin-left: 43%; margin-top: 50px">
+<div style="margin-left: 41%;">
 	<form action="<c:url value="/group/make"/>" method="post" name="fr" onsubmit="return submitCheck()">
-		그룹 이름 : <input type="text" name="name">
-		<h4>지각 RULE 설정</h4>
-		지각 시작 시간 : <input type="time" name="late_start"><br>
-		시간 간격 : <input type="number" name="late_interval">분<br>
-	 	지각비 : <input type="number" name="late_fee"><br>
-		최대 지각 시간 : <input type="time" name="late_max"><br>
-		최대 지각비 : <input type="number" name="late_maxFee"><br>
-		결석비 : <input type="number" name="absent_fee"><br>
-		기타 벌금 : <input type="number" name="fee"><br>
-		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-		**입력 하지 않을 시 기본 값으로 저장됩니다.<br>
-		지각 시작 시간 : AM 11:00<br>
-		시간 간격 : 10분<br>
-	 	지각비 : 1000원<br>
-		최대 지각 시간 : PM12:00<br>
-		최대 지각비 : 6000원<br>
-		결석비 : 10000원<br>
-		기타 벌금 : 2000원<br>
-		<input type="hidden" name="late_start_default" value="11:00:00">
-		<input type="hidden" name="late_interval_default" value="10">
-	 	<input type="hidden" name="late_fee_default" value="1000">
-		<input type="hidden" name="late_max_default" value="12:00:00">
-		<input type="hidden" name="late_maxFee_default" value="6000">
-		<input type="hidden" name="absent_fee_default" value="10000">
-		<input type="hidden" name="fee_default" value="2000"><br>
-		요일: 
-		<input type="checkbox" name="week" value="mon">월
-		<input type="checkbox" name="week" value="tue">화
-		<input type="checkbox" name="week" value="wed">수
-		<input type="checkbox" name="week" value="thu">목
-		<input type="checkbox" name="week" value="fri">금
-		<input type="checkbox" name="week" value="sat">토
-		<input type="checkbox" name="week" value="sun">일<br>
+		<div class="group_make_content">
+			그룹 이름 : <input type="text" name="name">
+		</div>
+		<div class="group_make_content">
+			<h4><b>&lt;기본 RULE 설정&gt;</b></h4>
+			요일: 
+			월<input type="checkbox" name="week" value="월">
+			화<input type="checkbox" name="week" value="화">
+			수<input type="checkbox" name="week" value="수">
+			목<input type="checkbox" name="week" value="목">
+			금<input type="checkbox" name="week" value="금">
+			토<input type="checkbox" name="week" value="토">
+			일<input type="checkbox" name="week" value="일"><br>
+			
+			시간: 
+			<input type="time" name="start_time">
+		</div>
+		<div class="group_make_content">
+			<h4><b>&lt;지각 RULE 설정&gt;</b></h4>
+			<table>
+				<tr><td>지각 시작 시간</td><td><input type="time" name="late_start"></td></tr>
+				<tr><td>시간 간격</td><td><input type="number" name="late_interval">분</td></tr>
+			 	<tr><td>지각비</td><td><input type="number" name="late_fee"></td></tr>
+				<tr><td>최대 지각 시간</td><td><input type="time" name="late_max"></td></tr>
+				<tr><td>최대 지각비</td><td><input type="number" name="late_maxFee"></td></tr>
+				<tr><td>결석비</td><td><input type="number" name="absent_fee"></td></tr>
+				<tr><td>기타 벌금</td><td><input type="number" name="fee"></td></tr>
+			</table>
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+			<div id="rule_warn">
+				**입력 하지 않을 시 기본 값으로 저장됩니다.<br>
+				지각 시작 시간 : AM 11:00<br>
+				시간 간격 : 10분<br>
+			 	지각비 : 1000원<br>
+				최대 지각 시간 : PM12:00<br>
+				최대 지각비 : 6000원<br>
+				결석비 : 10000원<br>
+				기타 벌금 : 2000원
+			</div>
+			<input type="hidden" name="late_start_default" value="11:00:00">
+			<input type="hidden" name="late_interval_default" value="10">
+		 	<input type="hidden" name="late_fee_default" value="1000">
+			<input type="hidden" name="late_max_default" value="12:00:00">
+			<input type="hidden" name="late_maxFee_default" value="6000">
+			<input type="hidden" name="absent_fee_default" value="10000">
+			<input type="hidden" name="fee_default" value="2000">
+		</div>
+		<div class="group_make_content">
+			<h4><b>&lt;기타 RULE 설정&gt;</b></h4>
+			<textarea rows="4" cols="50" name=""></textarea>
+		</div>
+		
 		<!-- 중복 안되게 처리하기 -->
-		<h4>생성할 게시판</h4>
-		<table id="board_table">
-			<tr onmouseover="findRow(this.rowIndex)"><td><input type="text" name="board" value="공지사항"><input type='button' value="삭제" onclick="deleteBoard()"></td></tr>
-			<tr onmouseover="findRow(this.rowIndex)"><td><input type="text" name="board" value="자유게시판"><input type='button' value="삭제" onclick="deleteBoard()"></td></tr>
-		</table>
-		<div id="addBoard"></div>
-		<input type="button" value="추가" onclick="insertBoard()"><br>
-		**기본적으로 모든 회원이 댓글 및 글쓰기 권한이 있습니다. 게시판 관리에서 권한을 변경 할 수 있습니다.
+		<div class="group_make_content">
+			<h4><b>&lt;생성할 게시판&gt;</b></h4>
+			<table id="board_table">
+				<tr onmouseover="findRow(this.rowIndex)"><td><input type="text" name="board" value="공지사항"><input type='button' value="삭제" onclick="deleteBoard()"></td></tr>
+				<tr onmouseover="findRow(this.rowIndex)"><td><input type="text" name="board" value="자유게시판"><input type='button' value="삭제" onclick="deleteBoard()"></td></tr>
+			</table>
+			<div id="addBoard"></div>
+			<input type="button" value="추가" onclick="insertBoard()"><br>
+			<div id="rule_warn">
+				**기본적으로 모든 회원이 댓글 및 글쓰기 권한이 있습니다. 게시판 관리에서 권한을 변경 할 수 있습니다.
+			</div>
+		</div>
 		
 		
-		<h4>그룹 정보</h4>
-		지역: <select name="city">
-			<option>선택하세요</option>	
-			<option value="seoul">서울</option>	
-			<option value="busan">부산광역시</option>	
-			<option value="incheon">인천광역시</option>	
-			<option value="gyeonggi">경기도</option>	
-			<option value="daegu">대구광역시</option>	
-			<option value="daejeon">대전광역시</option>	
-			<option value="gwangju">광주광역시</option>	
-			<option value="ulsan">울산광역시</option>	
-			<option value="gangwon">강원도</option>	
-			<option value="gyeongNam">경상남도</option>	
-			<option value="gyeongBuk">경상북도</option>	
-			<option value="jeoNam">전라남도</option>	
-			<option value="jeoBuk">전라북도</option>	
-			<option value="chungNam">충청남도</option>	
-			<option value="chungBuk">충청북도</option>	
-			<option value="Jeju">제주도</option>	
-			</select><br>
-		목적: 
-		<select name="goal">
-			<option value="job">취업</option>	
-			<option value="hobby">취미</option>	
-			<option value="exam">시험</option>	
-			<option value="study">학습</option>	
-			<option value="etc">기타</option>	
-		</select><br>
-		<span style="float:left">카테고리: </span>
-		<select style="float:left" id="category_input" onclick="categoryInput()">
-			<option>선택하세요</option>	
-			<option value="it">IT</option>	
-			<option value="interview">면접</option>	
-			<option value="high_scool">수능</option>	
-			<option value="toeic">토익</option>	
-			<option value="toss">토스</option>	
-			<option value="opic">오픽</option>	
-			<option value="japan">일본어</option>	
-			<option value="china">중국어</option>	
-			<option value="jpt">jpt</option>	
-			<option value="jlpt">jlpt</option>	
-			<option value="hsk">hsk</option>	
-			<option value="goverment">공무원</option>	
-			<option value="design">디자인</option>	
-			<option value="english">영어</option>	
-			<option value="nsc">NCS</option>	
-			<option value="economy">경제</option>	
-			<option value="big_company">대기업적성검사</option>	
-			<option value="goverment_company">공기업준비</option>	
-			<option value="laguage">어학</option>	
-			<option value="exam">자격증</option>	
-			<option value="etc">기타</option>	
-		</select><span style="float:left">**최대 3개 가능</span><div id="category_view" style="float:left"></div><br>
-		<input type="hidden" name="category">
-		<span style="float:left">해시태그: </span><input type="text" onkeyup="hashTagInput(event)" id="hashTag_input"  style="float:left"><span style="float:left"> **최대 3개 가능</span> <div id="hashTag_view" style="float:left"></div><br>
-		<input type="hidden" name="hashTag">
-		공개여부: <input type="radio" value="false" name="secret">공개　
-	            <input type="radio" value="true" name="secret">비공개　<br>
+		<div class="group_make_content">
+			<h4><b>&lt;그룹 정보&gt;</b></h4>
+			<table>
+				<tr>
+					<td>지역</td>
+					<td>
+						<select name="city">
+							<option>선택하세요</option>	
+							<option value="서울">서울</option>	
+							<option value="부산광역시">부산광역시</option>	
+							<option value="인천광역시">인천광역시</option>	
+							<option value="경기도">경기도</option>	
+							<option value="대구광역시">대구광역시</option>	
+							<option value="대전광역시">대전광역시</option>	
+							<option value="광주광역시">광주광역시</option>	
+							<option value="울산광역시">울산광역시</option>	
+							<option value="강원도">강원도</option>	
+							<option value="경상남도">경상남도</option>	
+							<option value="경상북도">경상북도</option>	
+							<option value="전라남도">전라남도</option>	
+							<option value="전라북도">전라북도</option>	
+							<option value="충청남도">충청남도</option>	
+							<option value="충청북도">충청북도</option>	
+							<option value="제주도">제주도</option>	
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>목적</td> 
+					<td>
+						<select name="goal">
+							<option>선택하세요</option>	
+							<option value="취업">취업</option>	
+							<option value="취미">취미</option>	
+							<option value="시험">시험</option>	
+							<option value="학습">학습</option>	
+							<option value="기타">기타</option>	
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>카테고리</td>
+					<td>
+						<select style="float:left" id="category_input" onclick="categoryInput()">
+							<option>선택하세요</option>	
+							<option value="IT">IT</option>	
+							<option value="면접">면접</option>	
+							<option value="수능">수능</option>	
+							<option value="토익">토익</option>	
+							<option value="토스">토스</option>	
+							<option value="오픽">오픽</option>	
+							<option value="일본어">일본어</option>	
+							<option value="중국어">중국어</option>	
+							<option value="jpt">jpt</option>	
+							<option value="jlpt">jlpt</option>	
+							<option value="hsk">hsk</option>	
+							<option value="공무원">공무원</option>	
+							<option value="디자인">디자인</option>	
+							<option value="영어">영어</option>	
+							<option value="NCS">NCS</option>	
+							<option value="경제">경제</option>	
+							<option value="대기업적성검사">대기업적성검사</option>	
+							<option value="공기업">공기업</option>	
+							<option value="어학">어학</option>	
+							<option value="자격증">자격증</option>	
+							<option value="기타">기타</option>	
+						</select>
+						<span style="float:left">**최대 3개 가능</span><div id="category_view" style="float:left"></div>
+						<input type="hidden" name="category">
+					</td>
+				</tr>
+				<tr>
+					<td>해시태그</td>
+					<td><input type="text" onkeyup="hashTagInput(event)" id="hashTag_input"  style="float:left"><span style="float:left"> **최대 3개 가능</span> <div id="hashTag_view" style="float:left"></div>
+					<input type="hidden" name="hashTag"></td>
+				</tr>
+				<tr>
+					<td>공개여부</td>
+					<td>
+						<input type="radio" value="false" name="secret" checked>공개　
+		            	<input type="radio" value="true" name="secret">비공개
+		            </td>
+		         </tr>
+			</table>
+	    </div>
 	    <div style="margin-top: 40px;margin-bottom: 30px;">
 			<input type="submit" value="작성 완료">
 			<input type="button" value="취소" onclick="history.back()">
 		</div>
 	</form>
 </div>
+<c:import url="/member/bottom" />
 </body>
 </html>

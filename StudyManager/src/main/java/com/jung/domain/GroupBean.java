@@ -5,9 +5,9 @@ import java.util.Date;
 import org.springframework.stereotype.Service;
 
 public class GroupBean {
-	private String name, board, late_max, late_start, admin, member, week, city, goal, category, hashTag;
+	private String name, board, late_max, late_start, admin, member, week, city, goal, category, hashTag, start_time, rule;
 	private int num, late_interval, late_fee, late_maxFee, fee, absent_fee;
-	private Date date, reg_date;
+	private Date date;
 	private boolean secret;
 	
 	public String getName() {
@@ -88,12 +88,6 @@ public class GroupBean {
 	public void setAbsent_fee(int absent_fee) {
 		this.absent_fee = absent_fee;
 	}
-	public Date getReg_date() {
-		return reg_date;
-	}
-	public void setReg_date(Date reg_date) {
-		this.reg_date = reg_date;
-	}
 	public String getWeek() {
 		return week;
 	}
@@ -129,6 +123,18 @@ public class GroupBean {
 	}
 	public void setSecret(boolean secret) {
 		this.secret = secret;
+	}
+	public String getStart_time() {
+		return start_time;
+	}
+	public void setStart_time(String start_time) {
+		this.start_time = start_time;
+	}
+	public String getRule() {
+		return rule;
+	}
+	public void setRule(String rule) {
+		this.rule = rule;
 	}
 
 }

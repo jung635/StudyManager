@@ -9,17 +9,20 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h1>회원정보수정</h1>
-<form action="<c:url value="/member/update"/>" method="post" name="fr">
-아이디:<input type="text" name="id" value="${mb.id }" readonly><br>
-비밀번호 확인 :<input type="password" name="pass"><br>
-이름 :<input type="text" name="name" value="${mb.name}"><br>
-나이 :<input type="text" name="age" value="${mb.age }"><br>
-성별 :<input type="radio" name="gender" value="남" <c:if test="${mb.gender eq '남' }">checked</c:if>>남
-<input type="radio" name="gender" value="여" <c:if test="${mb.gender eq '여' }">checked</c:if>>여<br>
-email :<input type="text" name="email" value="${mb.email }"><br>
-<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-<input type="submit" value="회원정보수정">
-</form>
+<c:import url="/member/header" />
+<div class="container">
+	<c:import url="/member/member_nav" />
+	<div id="right_nav_content">
+		<h2>회원 정보 수정</h2>
+		<form action="<c:url value="/member/update"/>" method="post" name="fr">
+			아이디:<input type="text" name="id" value="${mb.id }" readonly><br>
+			비밀번호 확인 :<input type="password" name="pass"><br>
+			이름 :<input type="text" name="name" value="${mb.name}"><br>
+			email :<input type="text" name="email" value="${mb.email }"><br>
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+			<input type="submit" value="회원정보수정">
+		</form>
+	</div>
+</div>
 </body>
 </html>

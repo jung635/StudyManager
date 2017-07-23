@@ -9,77 +9,7 @@
   <title>Study Manager</title>
   <meta charset="utf-8">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <style>
-  .table_center{
-  	margin: auto;
-  }
-  
-  .navbar {
-      padding-top: 15px;
-      padding-bottom: 15px;
-      border: 0;
-      border-radius: 0;
-      margin-bottom: 0;
-      font-size: 12px;
-      letter-spacing: 5px;
-  }
-  .navbar-nav  li a:hover {
-      color: #1abc9c !important;
-  }
-  
-  .clear{
-	clear: both;
-  }
-  
-  .center{
-	margin: auto;
-  }
-  
-  .title{
-  	text-align: center;
-  }
-  
-  /* dropDown */
-  .dropbtn {
-    background-color: #4CAF50;
-    color: white;
-    padding: 16px 12px 16px 12px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-}
-
-.dropdown {
-    position: relative;
-    display: inline-block;
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-}
-
-.dropdown-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-}
-
-.dropdown-content a:hover {background-color: #f1f1f1}
-
-.dropdown:hover .dropdown-content {
-    display: block;
-}
-
-.dropdown:hover .dropbtn {
-    background-color: #3e8e41;
-}
-</style>
+  <link href="<c:url value='/resources/css/inner.css'/>" rel="stylesheet">
 </head>
 <body>
 <nav class="navbar navbar-default">
@@ -95,8 +25,8 @@
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav navbar-right">
         <li><a href="<c:url value="/group/make"/>">Create Group</a></li>
-        <li><a href="#">My Groups</a></li>
-        <li><a href="#">Search Group</a></li>
+        <li><a href="<c:url value="/member/myGroup"/>">My Groups</a></li>
+        <li><a href="<c:url value="/member/groupSearch"/>">Search Group</a></li>
         <sec:authorize access="hasRole('ROLE_ADMIN')">
 			<li><a href="<c:url value="/member/list"/>">Admin</a></li>
 		</sec:authorize>

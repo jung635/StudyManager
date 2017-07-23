@@ -9,6 +9,7 @@
     <http auto-config='true' use-expressions='true'>
     	<intercept-url pattern="/member/login" access="isAnonymous()" />
     	<intercept-url pattern="/member/insert" access="isAnonymous()" />
+    	<intercept-url pattern="/resources/**" access="permitAll()" />
     	<intercept-url pattern="/member/dupIdCheck" access="isAnonymous()" />
     	<intercept-url pattern="/member/login_duplicate" access="permitAll()" />
 		<intercept-url pattern="/**" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />

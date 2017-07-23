@@ -9,26 +9,34 @@
 <title>Insert title here</title>
 </head>
 <body>
+<c:import url="/member/header" />
 <c:import url="/group/header" />
-<table border="1">
-<th>글번호</th><th>이름</th><th>제목</th><th>조회수</th><th>작성일</th>
-<c:forEach var="bb" items="${boardList}">
-<tr><td>${bb.num }</td><td>${bb.name }<td>
-<c:set var="wid" value="0"/>
-<a href="<c:url value="/board/content?num=${bb.num }&pageNum=${pageMaker.pageNum}"/>">${bb.subject }</a></td>
-<td>${bb.readcount }</td><td>${bb.date }</td>
-</tr>
-</c:forEach>
-</table>
-<c:if test="${pageMaker.startPage }>${pageMaker.pageBlock }">
-<a href="<c:url value="/board/list?pageNum=${pageMaker.startPage }-${pageMaker.pageBlock}"/>">[이전]</a>&nbsp;
-</c:if>
-<c:forEach var="i" begin="${pageMaker.startPage }" end="${pageMaker.endPage }" step="1">
-<a href='<c:url value="/board/list?pageNum=${i }"/>'>[${i }]</a>
-</c:forEach>
-<c:if test="${pageMaker.endPage }<${pageMaker.pageCount }">
-<a href="<c:url value="/board/list?pageNum=${pageMaker.startPage }+${pageMaker.pageBlock}"/>">[다음]</a>&nbsp;
-</c:if>
-<input type="button" value="글쓰기" onclick="location.href='<c:url value="/board/write?board_name=${board_name }"/>'">
+<div class="container">
+<div class="title"><h1>게시판</h1></div>
+	<table class="table_center default_thTable">
+	<th>글번호</th><th>제목</th><th>이름</th><th>조회수</th><th>작성일</th>
+	<c:forEach var="bb" items="${boardList}">
+		<tr><td>${bb.num }</td>
+			<c:set var="wid" value="0"/>
+			<td><a href="<c:url value="/board/content?num=${bb.num }&pageNum=${pageMaker.pageNum}"/>">${bb.subject }</a></td>
+			<td>${bb.name }</td>
+			<td>${bb.readcount }</td>
+			<td>${bb.date }</td>
+		</tr>
+	</c:forEach>
+	</table>
+	<div class="text_center" style="margin-top: 20px">
+	<c:if test="${pageMaker.startPage }>${pageMaker.pageBlock }">
+	<a href="<c:url value="/board/list?pageNum=${pageMaker.startPage }-${pageMaker.pageBlock}&board_name=${board_name }"/>">[이전]</a>&nbsp;
+	</c:if>
+	<c:forEach var="i" begin="${pageMaker.startPage }" end="${pageMaker.endPage }" step="1">
+	<a href='<c:url value="/board/list?pageNum=${i }&board_name=${board_name }"/>'>[${i }]</a>
+	</c:forEach>
+	<c:if test="${pageMaker.endPage }<${pageMaker.pageCount }">
+	<a href="<c:url value="/board/list?pageNum=${pageMaker.startPage }+${pageMaker.pageBlock}&board_name=${board_name }"/>">[다음]</a>&nbsp;
+	</c:if>
+	<input type="button" value="글쓰기" onclick="location.href='<c:url value="/board/write?board_name=${board_name }"/>'">
+	</div>
+</div>
 </body>
 </html>

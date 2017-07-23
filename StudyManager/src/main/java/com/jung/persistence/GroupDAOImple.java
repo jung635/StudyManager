@@ -92,6 +92,11 @@ public class GroupDAOImple implements GroupDAO {
 	public List<AttendenceBean> getAllFee(int group_num) throws Exception {
 		return sqlSession.selectList(namespace+".getAllFee", group_num);
 	}
+	
+	@Override
+	public AttendenceBean getFeeByNum(int num) throws Exception {
+		return sqlSession.selectOne(namespace+".getFeeByNum", num);
+	}
 
 	@Override
 	public void updateMember(Map<String, Object> map) throws Exception {
@@ -102,6 +107,26 @@ public class GroupDAOImple implements GroupDAO {
 	@Override
 	public List<GroupBean> groupSearch(Map<String, Object> map) throws Exception {
 		return sqlSession.selectList(namespace+".groupSearch", map);
+	}
+
+	@Override
+	public void payDone(int attend_num) throws Exception {
+		sqlSession.update(namespace+".payDone", attend_num);
+	}
+
+	@Override
+	public void attendDel(int attend_num) throws Exception {
+		sqlSession.delete(namespace+".attendDel", attend_num);
+	}
+
+	@Override
+	public void updateAttend(AttendenceBean ab) throws Exception {
+		sqlSession.update(namespace+".updateAttend", ab);
+	}
+
+	@Override
+	public void updateGroup(GroupBean gb) throws Exception {
+		sqlSession.update(namespace+".updateGroup", gb);
 	}
 	
 	

@@ -22,24 +22,26 @@ function searchMember(){
 }
 </script>
 <body>
+<c:import url="/member/header" />
 <c:import url="/group/header" />
+<div class="container">
 <c:import url="/group/manage_nav" />
-<div id="content">
-	<h2>멤버 관리</h2>
-		<h4>그룹 멤버</h4>
-			<table border="1">
-				<c:forEach items="${member }" var="member">
-					<tr><td>${member }</td>
-						<td><input type="button" value="강제 탈퇴" onclick="location.href='<c:url value="/group/memberDelete?member_id=${member }"/>'"></td>
-						<td><input type="button" value="회원 정보 보기" onclick="location.href='<c:url value="/group/memberInfo?member_id=${member }"/>'"></td></tr>
-				</c:forEach>
-			</table>
-		
-		<h4>멤버 추가하기</h4>
-			<div id="addMember">
-			<input type="text" id="search_input"><input type="button" value="검색" onclick="searchMember()">
-				<div id="memberList"></div>
-			</div>
+	<div id="right_nav_content">
+		<div class="title"><h1>멤버 관리</h1></div>
+			<h4>그룹 멤버</h4>
+				<table class="default_topbotTable">
+					<c:forEach items="${member }" var="member">
+						<tr><td>${member }</td>
+							<td><input type="button" value="강제 탈퇴" onclick="location.href='<c:url value="/group/memberDelete?member_id=${member }"/>'"></td>
+							<td><input type="button" value="회원 정보 보기" onclick="location.href='<c:url value="/group/memberInfo?member_id=${member }"/>'"></td></tr>
+					</c:forEach>
+				</table>
+				<div id="addMember">
+					<h4>멤버 추가하기</h4>
+					<input type="text" id="search_input"><input type="button" value="검색" onclick="searchMember()">
+						<div id="memberList"></div>
+				</div>
+	</div>
 </div>
 </body>
 </html>

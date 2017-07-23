@@ -94,6 +94,7 @@ public class BoardController {
 		pageMaker.setPageNum(pageNum);
 		Map<String, Object> pageMap = new HashMap<String, Object>();
 		int start = (pageMaker.getPageSize()*(pageNum-1));
+		System.out.println("start: "+start);
 		pageMap.put("start", start);
 		pageMap.put("pageSize", pageMaker.getPageSize());
 		pageMap.put("group_num", (Integer)session.getAttribute("group_num"));
