@@ -5,20 +5,38 @@
  
  <mapper namespace="com.jung.mapper.BoardMapper">
  	<insert id="insertBoard">
- 		insert into board (num, name, subject, content, readcount, ip, date, re_lev, re_num, file, fileName, group_num, board_num)
- 		values (#{num}, #{name}, #{subject}, #{content}, 0, #{ip}, now(), 0, 0, #{file}, #{fileName}, #{group_num}, #{board_num})
+ 		insert into board (num, name, subject, content, readcount, ip, date, re_lev, re_num, file, fileName, group_num, board_num, re_board_num)
+ 		values (#{num}, #{name}, #{subject}, #{content}, 0, #{ip}, now(), 0, 0, #{file}, #{fileName}, #{group_num}, #{board_num}, #{num})
+ 	</insert>
+ 	
+ 	<insert id="insertReply">
+ 		insert into board (num, name, content, ip, date, re_lev, re_num, group_num, board_num, re_board_num)
+ 		values (#{num}, #{name}, #{content}, #{ip}, now(), 1, #{re_num}, #{group_num}, #{board_num}, #{num})
  	</insert>
  	
  	<select id="getMaxNum" resultType="Integer">
  		select max(num) from board
  	</select>
  	
+ 	<select id="getMaxReNum" resultType="Integer">
+ 		select max(re_num) from board
+ 		where num = #{num}
+ 	</select>
+ 	
  	<select id="getBoardList" parameterType="map" resultType="com.jung.domain.BoardBean">
  		select * from board
- 		where group_num=#{group_num} and board_num=#{board_num}
+ 		where group_num=#{group_num} and board_num=#{board_num} and re_lev=0
  		order by date desc
  		limit #{start},#{pageSize}
  	</select>
+ 	
+ 	<select id="getReplyList" parameterType="map" resultType="com.jung.domain.BoardBean">
+ 		select * from board
+ 		where group_num=#{group_num} and board_num=#{board_num} and re_lev=1
+ 		order by date desc
+ 		limit #{start},#{pageSize}
+ 	</select>
+ 	
  	<select id="getBoardListByGroup" parameterType="map" resultType="com.jung.domain.BoardBean">
  		select * from board
  		where group_num=#{group_num}
@@ -68,6 +86,11 @@
  	<select id="getBoardTeamListByGroup" resultType="com.jung.domain.BoardTeamBean">
  		select * from boardTeam 
  		where group_num=#{group_num}
+ 	</select>
+ 	
+ 	<select id="getBoardTeamDetail" resultType="com.jung.domain.BoardTeamBean">
+ 		select * from boardTeam
+ 		where board_num=#{board_num}
  	</select>
  	
  </mapper>

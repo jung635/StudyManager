@@ -91,7 +91,30 @@ public class BoardDAOImple implements BoardDAO{
 	public List<BoardBean> getBoardTeamListByGroup(int group_num) throws Exception {
 		return sqlSession.selectList(namespace+".getBoardTeamListByGroup", group_num);
 	}
-	
+
+	@Override
+	public void insertReply(BoardBean bb) throws Exception {
+		sqlSession.insert(namespace+".insertReply", bb);
+	}
+
+	@Override
+	public int getMaxReNum() throws Exception {
+		int max;
+		if(sqlSession.selectOne(namespace+".getMaxReNum") == null) max = 0;
+		else max = sqlSession.selectOne(namespace+".getMaxReNum");
+		
+		return max;
+	}
+
+	@Override
+	public List<BoardBean> getReplyList(Map<String, Object> pageMap) throws Exception {
+		return sqlSession.selectList(namespace+".getReplyList", pageMap);
+	}
+
+	@Override
+	public BoardTeamBean getBoardTeamDetail(int board_num) throws Exception {
+		return sqlSession.selectOne(namespace+".getBoardTeamDetail", board_num);
+	}
 	
 	
 }

@@ -122,4 +122,24 @@ public class BoardServiceImple implements BoardService{
 		return bdao.getBoardTeamListByGroup(group_num);
 	}
 
+	@Override
+	public void insertReply(BoardBean bb) throws Exception {
+		bdao.insertReply(bb);
+	}
+
+	@Override
+	public int getMaxReNum() throws Exception {
+		return bdao.getMaxReNum();
+	}
+
+	@Override
+	public List<BoardBean> getReplyList(Map<String, Object> pageMap) throws Exception {
+		return bdao.getReplyList(pageMap);
+	}
+
+	@Override
+	public BoardTeamBean getBoardTeamDetail(int board_num) throws Exception {
+		return bdao.getBoardTeamDetail(board_num);
+	}
+
 }
