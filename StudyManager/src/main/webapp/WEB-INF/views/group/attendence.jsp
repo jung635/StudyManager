@@ -47,7 +47,7 @@ function absence(id){
 					<tr><td>${map.key.id }</td><td>${map.key.name }</td>
 						<td>${map.key.email }</td>
 						<td>${map.value.status}</td>
-						<td>${map.value.attend_time}</td>
+						<td><c:choose><c:when test="${map.value.late_interval eq -1 }">결석</c:when><c:otherwise>${map.value.attend_time}</c:otherwise></c:choose></td>
 						<td>${map.value.late_fee}</td>
 						<td>${map.value.absent_fee}</td>
 						<td><c:if test="${map.value.payed eq false}">미지불</c:if><c:if test="${map.value.payed eq true}">지불 완료</c:if></td>

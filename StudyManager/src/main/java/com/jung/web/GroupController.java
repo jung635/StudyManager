@@ -533,7 +533,6 @@ public class GroupController {
 	
 	@RequestMapping(value="/boardUpdate", method=RequestMethod.POST)
 	public String boardUpdate(BoardTeamBean bt, RedirectAttributes redirect) throws Exception{
-		System.out.println(bt.getWrite_auth());
 		bservice.updateTeamBoard(bt);
 		redirect.addAttribute("board_num", bt.getBoard_num());
 		return "redirect:/group/boardDetail";

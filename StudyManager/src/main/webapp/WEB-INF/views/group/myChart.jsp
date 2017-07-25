@@ -19,9 +19,9 @@
 	<div id="info">
 	<div class="title"><h3>지각비 내역</h3></div>
 	<table class="table_center default_thTable">
-		<th>날짜</th><th>출석상태</th><th>출석시간</th><th>출석시간</th><th>지각비</th><th>결석비</th><th>벌금</th>
+		<th>날짜</th><th>출석상태</th><th>출석시간</th><th>늦은 시간</th><th>지각비</th><th>결석비</th><th>벌금</th>
 		<c:forEach items="${ab_list }" var="ab">
-			<tr><td>${ab.date }</td><td>${ab.status }</td><td><c:if test="${ab.attend_time eq '-1' }">결석</c:if>${ab.attend_time }</td><td>${ab.late_interval }</td>
+			<tr><td>${ab.date }</td><td>${ab.status }</td><td><c:choose><c:when test="${ab.late_interval eq -1 }">결석</c:when><c:otherwise>${ab.attend_time }</c:otherwise></c:choose></td><td><c:choose><c:when test="${ab.late_interval eq -1 }">결석</c:when><c:otherwise>${ab.late_interval }</c:otherwise></c:choose> </td>
 			<td>${ab.late_fee }</td><td>${ab.absent_fee }</td><td>${ab.fee }</td></tr>
 		</c:forEach>
 	</table>
