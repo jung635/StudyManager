@@ -43,5 +43,6 @@ function searchMember(){
 				</div>
 	</div>
 </div>
+<c:import url="/member/bottom" />
 </body>
 </html>

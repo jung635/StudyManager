@@ -42,5 +42,6 @@
 		</form>
 	</div>
 </div>
+<c:import url="/member/bottom" />
 </body>
 </html>

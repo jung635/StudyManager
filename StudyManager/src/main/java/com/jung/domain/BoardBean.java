@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 public class BoardBean {
 	
 	private String name, subject, content, ip, file, fileName;
-	private int num, readcount, re_lev, re_num, group_num, board_num;
+	private int num, readcount, re_lev, re_num, group_num, board_num, re_board_num;
 	private Timestamp date;
 	
 	
@@ -85,6 +85,12 @@ public class BoardBean {
 	}
 	public void setBoard_num(int board_num) {
 		this.board_num = board_num;
+	}
+	public int getRe_board_num() {
+		return re_board_num;
+	}
+	public void setRe_board_num(int re_board_num) {
+		this.re_board_num = re_board_num;
 	}
 
 }

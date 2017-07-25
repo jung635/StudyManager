@@ -104,7 +104,9 @@ function findRow(row){
 	table.clickedRowIndex=row;
 }
 
+
 tag_count = '${gb.hashTag}'.split(",").length;
+if('${gb.hashTag}'.trim().length==0) tag_count = 0;
 function hashTagInput(event){
 	if(event.keyCode == 32 || event.keyCode == 13){
 		if(tag_count>2){
@@ -130,6 +132,7 @@ function tagDelete(count){
 }
 
 category_count = '${gb.category}'.split(",").length;
+if('${gb.category}'.trim().length==0) category_count = 0;
 function categoryInput(){
 	category_input = document.getElementById("category_input").value;
 	category_index = document.getElementById("category_input").selectedIndex;
@@ -314,5 +317,6 @@ function categoryDelete(count){
 	</div>
 	</div>
 </div>
+<c:import url="/member/bottom" />
 </body>
 </html>

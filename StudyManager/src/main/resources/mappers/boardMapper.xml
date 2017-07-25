@@ -11,7 +11,12 @@
  	
  	<insert id="insertReply">
  		insert into board (num, name, content, ip, date, re_lev, re_num, group_num, board_num, re_board_num)
- 		values (#{num}, #{name}, #{content}, #{ip}, now(), 1, #{re_num}, #{group_num}, #{board_num}, #{num})
+ 		values (#{num}, #{name}, #{content}, #{ip}, now(), 1, #{re_num}, #{group_num}, #{board_num}, #{re_board_num})
+ 	</insert>
+ 	
+ 	<insert id="insertReReply">
+ 		insert into board (num, name, content, ip, date, re_lev, re_num, group_num, board_num, re_board_num)
+ 		values (#{num}, #{name}, #{content}, #{ip}, now(), 2, #{re_num}, #{group_num}, #{board_num}, #{re_board_num})
  	</insert>
  	
  	<select id="getMaxNum" resultType="Integer">
@@ -20,7 +25,7 @@
  	
  	<select id="getMaxReNum" resultType="Integer">
  		select max(re_num) from board
- 		where num = #{num}
+ 		where re_board_num = #{re_board_num} and re_lev=1
  	</select>
  	
  	<select id="getBoardList" parameterType="map" resultType="com.jung.domain.BoardBean">
@@ -32,7 +37,14 @@
  	
  	<select id="getReplyList" parameterType="map" resultType="com.jung.domain.BoardBean">
  		select * from board
- 		where group_num=#{group_num} and board_num=#{board_num} and re_lev=1
+ 		where group_num=#{group_num} and board_num=#{board_num} and re_lev=1 and re_board_num=#{re_board_num}
+ 		order by date desc
+ 		limit #{start},#{pageSize}
+ 	</select>
+ 	
+ 	<select id="getReReplyList" parameterType="map" resultType="com.jung.domain.BoardBean">
+ 		select * from board
+ 		where group_num=#{group_num} and board_num=#{board_num} and re_lev=2 and re_board_num=#{re_board_num} and re_num=#{re_num}
  		order by date desc
  		limit #{start},#{pageSize}
  	</select>
@@ -46,7 +58,7 @@
  	
  	<select id="getListCount" parameterType="map" resultType="Integer">
  		select count(*) from board 
- 		where group_num=#{group_num} and board_num=#{board_num}
+ 		where group_num=#{group_num} and board_num=#{board_num} and re_lev=0
  	</select>
  	
  	<select id="getListCountByGroup" resultType="Integer">
@@ -79,6 +91,11 @@
  		values (#{board_num}, #{group_num}, #{name}, #{write_auth}, #{comment_auth})
  	</insert>
  	
+ 	<update id="updateTeamBoard">
+ 		update boardTeam set name=#{name}, write_auth=#{write_auth}, comment_auth=#{comment_auth} 
+ 		where board_num=#{board_num}
+ 	</update>
+ 	
  	<select id="getMaxNumBoardTeam" resultType="Integer">
  		select max(board_num) from boardTeam
  	</select>
@@ -92,5 +109,7 @@
  		select * from boardTeam
  		where board_num=#{board_num}
  	</select>
+ 	
+ 	
  	
  </mapper>

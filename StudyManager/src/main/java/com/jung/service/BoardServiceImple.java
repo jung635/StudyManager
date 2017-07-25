@@ -128,8 +128,8 @@ public class BoardServiceImple implements BoardService{
 	}
 
 	@Override
-	public int getMaxReNum() throws Exception {
-		return bdao.getMaxReNum();
+	public int getMaxReNum(int re_board_num) throws Exception {
+		return bdao.getMaxReNum(re_board_num);
 	}
 
 	@Override
@@ -142,4 +142,20 @@ public class BoardServiceImple implements BoardService{
 		return bdao.getBoardTeamDetail(board_num);
 	}
 
+	@Override
+	public void insertReReply(BoardBean bb) throws Exception {
+		bdao.insertReReply(bb);
+	}
+
+	@Override
+	public List<BoardBean> getReReplyList(Map<String, Object> pageMap) throws Exception {
+		return bdao.getReReplyList(pageMap);
+	}
+
+	@Override
+	public void updateTeamBoard(BoardTeamBean bt) throws Exception {
+		bdao.updateTeamBoard(bt);
+	}
+	
+	
 }

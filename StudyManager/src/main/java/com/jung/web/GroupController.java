@@ -22,6 +22,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.jung.domain.AlarmBean;
 import com.jung.domain.AttendenceBean;
@@ -374,16 +375,7 @@ public class GroupController {
 	@RequestMapping(value="/manageBoard", method=RequestMethod.GET)
 	public String  manageBoardGet(Model model, HttpSession session) throws Exception{
 		int group_num = (Integer)session.getAttribute("group_num");
-		GroupBean gb = service.getGroupDetail(group_num);
-		if(gb.getBoard() != null){
-			String[] board_arr = gb.getBoard().split(",");
-			model.addAttribute("board", board_arr);
-			model.addAttribute("length", board_arr.length);
-		}else{
-			model.addAttribute("board", new String[0]);
-			model.addAttribute("length", 0);
-		}
-		model.addAttribute("gb", gb);
+		model.addAttribute("board", bservice.getBoardTeamListByGroup(group_num));
 		return "/group/board_manage";
 	}
 	
@@ -533,4 +525,17 @@ public class GroupController {
 		return "redirect:/group/manageGroup";
 	}
 	
+	@RequestMapping(value="/boardDetail", method={ RequestMethod.GET, RequestMethod.POST })
+	public String  boardDetailGet(Model model, @RequestParam("board_num") int board_num) throws Exception{
+		model.addAttribute("bt", bservice.getBoardTeamDetail(board_num));
+		return "/group/boardDetail";
+	}
+	
+	@RequestMapping(value="/boardUpdate", method=RequestMethod.POST)
+	public String boardUpdate(BoardTeamBean bt, RedirectAttributes redirect) throws Exception{
+		System.out.println(bt.getWrite_auth());
+		bservice.updateTeamBoard(bt);
+		redirect.addAttribute("board_num", bt.getBoard_num());
+		return "redirect:/group/boardDetail";
+	}
 }

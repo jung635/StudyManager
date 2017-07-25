@@ -199,7 +199,7 @@ function categoryDelete(count){
 		</div>
 		<div class="group_make_content">
 			<h4><b>&lt;기타 RULE 설정&gt;</b></h4>
-			<textarea rows="4" cols="50" name=""></textarea>
+			<textarea rows="4" cols="50" name="rule"></textarea>
 		</div>
 		
 		<!-- 중복 안되게 처리하기 -->

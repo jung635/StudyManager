@@ -92,5 +92,6 @@
 		</c:forEach>
 	</table>
 </div>
+<c:import url="/member/bottom" />
 </body>
 </html>

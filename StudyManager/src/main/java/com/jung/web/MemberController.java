@@ -255,7 +255,7 @@ public class MemberController {
 		MemberBean mb = service.getInfo(id);
 		String group = "";
 		boolean joined_member = false;
-		if(mb.getTeam() == null){
+		if(mb.getTeam() == null || mb.getTeam().trim().length()==0){
 			group = String.valueOf(gb.getNum());
 		}else{
 			String[] team = mb.getTeam().split(",");

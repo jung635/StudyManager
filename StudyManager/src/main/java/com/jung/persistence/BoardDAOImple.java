@@ -98,10 +98,10 @@ public class BoardDAOImple implements BoardDAO{
 	}
 
 	@Override
-	public int getMaxReNum() throws Exception {
+	public int getMaxReNum(int re_board_num) throws Exception {
 		int max;
-		if(sqlSession.selectOne(namespace+".getMaxReNum") == null) max = 0;
-		else max = sqlSession.selectOne(namespace+".getMaxReNum");
+		if(sqlSession.selectOne(namespace+".getMaxReNum", re_board_num) == null) max = 0;
+		else max = sqlSession.selectOne(namespace+".getMaxReNum", re_board_num);
 		
 		return max;
 	}
@@ -114,6 +114,21 @@ public class BoardDAOImple implements BoardDAO{
 	@Override
 	public BoardTeamBean getBoardTeamDetail(int board_num) throws Exception {
 		return sqlSession.selectOne(namespace+".getBoardTeamDetail", board_num);
+	}
+
+	@Override
+	public void insertReReply(BoardBean bb) throws Exception {
+		sqlSession.insert(namespace+".insertReReply", bb);
+	}
+	
+	@Override
+	public List<BoardBean> getReReplyList(Map<String, Object> pageMap) throws Exception {
+		return sqlSession.selectList(namespace+".getReReplyList", pageMap);
+	}
+
+	@Override
+	public void updateTeamBoard(BoardTeamBean bt) throws Exception {
+		sqlSession.update(namespace+".updateTeamBoard", bt);
 	}
 	
 	

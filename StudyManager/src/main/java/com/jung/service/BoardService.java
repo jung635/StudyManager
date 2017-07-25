@@ -26,7 +26,10 @@ public interface BoardService {
 	public int getMaxNumBoardTeam() throws Exception;
 	public List<BoardBean> getBoardTeamListByGroup(int group_num) throws Exception;
 	public void insertReply(BoardBean bb) throws Exception;
-	public int getMaxReNum() throws Exception;
+	public void insertReReply(BoardBean bb) throws Exception;
+	public int getMaxReNum(int re_board_num) throws Exception;
 	public List<BoardBean> getReplyList(Map<String, Object> pageMap) throws Exception;
 	public BoardTeamBean getBoardTeamDetail(int board_num) throws Exception;
+	public List<BoardBean> getReReplyList(Map<String, Object> pageMap) throws Exception;
+	public void updateTeamBoard(BoardTeamBean bt) throws Exception;
 }

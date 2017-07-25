@@ -37,7 +37,13 @@
 	<c:if test="${bt.write_auth eq 'all' }">
 		<input type="button" value="글쓰기" onclick="location.href='<c:url value="/board/write?board_num=${bt.board_num }"/>'">
 	</c:if>
+	<c:if test="${bt.write_auth eq 'admin' }">
+		<c:if test="${gb.admin eq id }">
+			<input type="button" value="글쓰기" onclick="location.href='<c:url value="/board/write?board_num=${bt.board_num }"/>'">
+		</c:if>
+	</c:if>
 	</div>
 </div>
+<c:import url="/member/bottom" />
 </body>
 </html>

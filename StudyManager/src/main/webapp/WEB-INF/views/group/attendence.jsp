@@ -58,5 +58,6 @@ function absence(id){
 		</table>
 	</form>
 </div>
+<c:import url="/member/bottom" />
 </body>
 </html>

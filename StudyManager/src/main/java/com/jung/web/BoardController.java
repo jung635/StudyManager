@@ -89,7 +89,6 @@ public class BoardController {
 		count_map.put("group_num", group_num);
 		count_map.put("board_num", board_num);
 		pageMaker.setCount(service.getListCount(count_map));
-		System.out.println(service.getListCount(count_map));
 		int pageNum;
 		if(req.getParameter("pageNum") == null) pageNum = 1;
 		else pageNum = Integer.parseInt(req.getParameter("pageNum"));
@@ -102,6 +101,8 @@ public class BoardController {
 		pageMap.put("board_num", board_num);
 		
 		BoardTeamBean bt = service.getBoardTeamDetail(board_num);
+		model.addAttribute("gb", gservice.getGroupDetail(group_num));
+		model.addAttribute("id", (String)session.getAttribute("id"));
 		model.addAttribute("bt", bt);
 		model.addAttribute("boardList", service.getBoardList(pageMap));
 		model.addAttribute("pageMaker", pageMaker);
@@ -112,6 +113,7 @@ public class BoardController {
 	public String contentGet(Model model, @RequestParam("num") int num, @RequestParam("pageNum") int pageNum,
 			HttpSession session) throws Exception{
 		BoardBean bb = service.getContent(num);
+		service.updateReadCount(num);
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setPageBlock(10);
 		pageMaker.setPageSize(10);
@@ -119,7 +121,6 @@ public class BoardController {
 		count_map.put("group_num", (Integer)session.getAttribute("group_num"));
 		count_map.put("board_num", bb.getBoard_num());
 		pageMaker.setCount(service.getListCount(count_map));
-		System.out.println(service.getListCount(count_map));
 		pageMaker.setPageNum(pageNum);
 		Map<String, Object> pageMap = new HashMap<String, Object>();
 		int start = (pageMaker.getPageSize()*(pageNum-1));
@@ -127,6 +128,7 @@ public class BoardController {
 		pageMap.put("pageSize", pageMaker.getPageSize());
 		pageMap.put("group_num", (Integer)session.getAttribute("group_num"));
 		pageMap.put("board_num", bb.getBoard_num());
+		pageMap.put("re_board_num", bb.getRe_board_num());
 		model.addAttribute("bt", service.getBoardTeamDetail(bb.getBoard_num()));
 		model.addAttribute("pageMaker", pageMaker);
 		model.addAttribute("replyList", service.getReplyList(pageMap));
@@ -267,19 +269,62 @@ public class BoardController {
 		String ip = req.getHeader("X-FORWARDED-FOR");
 		if(ip == null) ip = req.getRemoteAddr();
 		bb.setIp(ip);
-		bb.setRe_num(service.getMaxReNum()+1);
+		bb.setRe_board_num(bb.getNum());
+		bb.setRe_num(service.getMaxReNum(bb.getRe_board_num())+1);
 		bb.setName((String)session.getAttribute("id"));
+		int num_tmp = bb.getNum();
 		bb.setNum(service.getMaxNum()+1);
 		service.insertReply(bb);
-		model.addAttribute("num", bb.getNum());
+		model.addAttribute("num", num_tmp);
 		model.addAttribute("pageNum", pageNum);
 		return "redirect:/board/content";
 	}
 	
+	@RequestMapping(value="/reReplyView", method=RequestMethod.GET)
+	public String reReplyGet(Model model, @RequestParam("num") int num, @RequestParam("pageNum") int pageNum, 
+			 @RequestParam("re_num") int re_num, HttpSession session) throws Exception{
+		BoardBean bb = service.getContent(num);
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setPageBlock(10);
+		pageMaker.setPageSize(10);
+		Map<String, Object> count_map = new HashMap<String, Object>();
+		count_map.put("group_num", (Integer)session.getAttribute("group_num"));
+		count_map.put("board_num", bb.getBoard_num());
+		pageMaker.setCount(service.getListCount(count_map));
+		pageMaker.setPageNum(pageNum);
+		Map<String, Object> pageMap = new HashMap<String, Object>();
+		int start = (pageMaker.getPageSize()*(pageNum-1));
+		pageMap.put("re_num", re_num);
+		pageMap.put("start", start);
+		pageMap.put("pageSize", pageMaker.getPageSize());
+		pageMap.put("group_num", (Integer)session.getAttribute("group_num"));
+		pageMap.put("board_num", bb.getBoard_num());
+		pageMap.put("re_board_num", bb.getRe_board_num());
+		model.addAttribute("pageMaker", pageMaker);
+		model.addAttribute("reReplyList", service.getReReplyList(pageMap));
+		model.addAttribute("pageNum", pageNum);
+
+		return "/board/reReplyView";
+	}
+	
 	@RequestMapping(value="/reReply", method=RequestMethod.GET)
-	public String reReplyGet(Model model, @RequestParam("num") int num) throws Exception{
-		model.addAttribute("bb", service.getContent(num));
-		model.addAttribute("num", num);
-		return "/board/reReply";
+	public String reReplyGet(Model model, @RequestParam("num") int num, @RequestParam("pageNum") int pageNum, 
+			 @RequestParam("re_num") int re_num, HttpServletRequest req, HttpSession session, 
+			 @RequestParam("content") String content) throws Exception{
+		String ip = req.getHeader("X-FORWARDED-FOR");
+		if(ip == null) ip = req.getRemoteAddr();
+		BoardBean bb = service.getContent(num);
+		bb.setContent(content);
+		bb.setNum(num);
+		bb.setIp(ip);
+		bb.setRe_board_num(bb.getNum());
+		bb.setRe_num(re_num);
+		bb.setName((String)session.getAttribute("id"));
+		int num_tmp = bb.getNum();
+		bb.setNum(service.getMaxNum()+1);
+		service.insertReReply(bb);
+		model.addAttribute("num", num_tmp);
+		model.addAttribute("pageNum", pageNum);
+		return "/board/reReplyView";
 	}
 }
